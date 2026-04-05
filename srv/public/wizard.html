@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDC Assessment - Interview</title>
+    <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="top-bar-brand">
+                <img src="/images/sap-logo.jpg" alt="SAP Logo" class="top-bar-logo-img">
+                <span class="top-bar-title">BDC Assessment Generator</span>
+            </div>
+            <div class="top-bar-actions">
+                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                    <span id="themeIcon"></span>
+                    <span id="themeLabel">Dark</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="wizard-page">
+            <!-- Phase 1: Customer Search -->
+            <div id="searchPhase">
+                <div class="search-hero">
+                    <div class="hero-badge">SAP Business Development Consulting</div>
+                    <h1>BDC Investment Optimizer</h1>
+                    <p class="hero-subtitle">AI-powered opportunity analysis with ECIF funding calculations</p>
+                    <div class="hero-value-props">
+                        <span class="value-prop-item">⚡ 60-second scenario generation</span>
+                        <span class="value-prop-item">💰 ECIF co-sell funding calculations</span>
+                        <span class="value-prop-item">📊 ROI, TCO, and NPV projections</span>
+                    </div>
+                    <div class="search-box">
+                        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="text" class="search-input" id="searchInput"
+                               placeholder="Search customer name..."
+                               autocomplete="off">
+                        <div class="search-dropdown" id="searchDropdown"></div>
+                    </div>
+                </div>
+
+                <!-- Customer Confirm Card (hidden until search) -->
+                <div id="customerConfirm" style="display: none;"></div>
+            </div>
+
+            <!-- Phase 2: Interview Questions -->
+            <div id="interviewPhase" style="display: none;">
+                <div class="interview-container">
+                    <!-- Progress -->
+                    <div class="interview-progress">
+                        <div class="interview-progress-header">
+                            <span class="interview-step-label" id="stepLabel">Question 1</span>
+                            <span class="interview-step-count" id="stepCount">1 of 5</span>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-fill" id="progressFill" style="width: 20%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Question Area (dynamically rendered) -->
+                    <div id="questionArea"></div>
+
+                    <!-- Navigation -->
+                    <div class="interview-nav">
+                        <button class="btn btn-ghost" id="backBtn" onclick="goBack()" style="visibility: hidden;">Back</button>
+                        <button class="btn btn-primary" id="nextBtn" onclick="goNext()" disabled>Continue</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 3: Generating -->
+            <div id="generatingPhase" style="display: none;">
+                <div class="generating-overlay">
+                    <div class="generating-spinner"></div>
+                    <div class="generating-title" id="genCustomerName">Generating Scenarios</div>
+                    <div class="generating-subtitle">Analyzing customer data and building financial models...</div>
+                    <div class="generating-steps" id="genSteps">
+                        <div class="generating-step active" data-step="analyze">
+                            <div class="generating-step-icon">1</div>
+                            <span>Analyzing customer profile</span>
+                        </div>
+                        <div class="generating-step pending" data-step="financial">
+                            <div class="generating-step-icon">2</div>
+                            <span>Building financial models</span>
+                        </div>
+                        <div class="generating-step pending" data-step="scenarios">
+                            <div class="generating-step-icon">3</div>
+                            <span>Calculating 3 scenarios</span>
+                        </div>
+                        <div class="generating-step pending" data-step="narrative">
+                            <div class="generating-step-icon">4</div>
+                            <span>Generating AI narrative</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enterprise Footer -->
+        <footer class="enterprise-footer">
+            <div class="footer-content">
+                <div class="footer-badge-group">
+                    <div class="footer-badge">
+                        <span class="badge-icon">✓</span>
+                        <span>Powered by SAP BTP</span>
+                    </div>
+                    <div class="footer-badge">
+                        <span class="badge-icon">🔒</span>
+                        <span>Enterprise Security</span>
+                    </div>
+                    <div class="footer-badge">
+                        <span class="badge-icon">⚡</span>
+                        <span>Real-time ECIF Calculations</span>
+                    </div>
+                </div>
+                <div class="footer-meta">
+                    <span>© 2026 SAP SE • Business Development Consulting</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="/js/wizard.js"></script>
+</body>
+</html>

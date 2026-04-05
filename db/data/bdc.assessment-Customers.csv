@@ -1,0 +1,26 @@
+id,name,bdcOverview,erpDeployment,existingBW,existingDatasphere,existingSAC,existingDatabricks,otherDatalake,existingPEA,dataOwner,aiOwner,ivp,iae,bwMoveTarget,notes
+209720,Aaon Inc.,,,,,,,,,,Paul Smith,John Neylon,,
+169280,Ben E Keith Company,Yes,S/4 RISE,No,Yes - Existing,Yes - Existing,No,Other,Yes,,,Paul Smith,Jay Marcazzo,No,"S4 RISE PCE. Caught up in RISE envonrment sizing. Looking at Redwood"
+205723,"Builders Firstsource, Inc",Yes,S/4 RISE,No,No,Yes - Existing,Yes - Native,,Yes,Nirmala Kunavarapu,Mike McConnell,Paul Smith,Brandon Stanley,No,"Project elevate. Consolidating 32 diff ERP systems. Elevate had a spinoff call EDP (enterprise data project). Orig go live is July 1st"
+162055,Celanese International Corporation,Yes,S/4 RISE,BW OP,No,Yes - New,No,Snowflake,Yes,Keith Stewart,Keith Stewart,Paul Smith,Brent McQuitty,Yes,"BW/4HANA (HEC) (AP01006)"
+31070838,Chesapeake Energy,Yes,ECC OP,,Yes - New,No,Yes - Native,Snowflake,No,Chris Yates / Zach Pullin,Chris Yates / Zach Pullin,Paul Smith,Lauren Burns,No,"Looking at S4 / ECC Rise. Recently Purchsed Datasphere w S4 Hana Runtime conversion."
+2990000,Commercial Metals Company,Yes,ECC OP,BW/4 OP,No,Yes - Existing,No,Other,Yes,Carlos Rodrigues,Joe Gentilly,Paul Smith,John Neylon,Yes,"SAP BW on HANA (AP00007)"
+4467871,Continental Resources,Yes,ECC OP,BW OP,No,Yes - Native,Other,Nc,Nc,Cindy Jones,Cindy Jones,Grant Vittitow,Grant Vittitow,Yes,"SAP BW on HANA (AP00004)"
+210314,Flowserve US Company,Yes,S/4 OP,BW/4 OP,No,No,No,Other,No,Doug Short,Doug Short,Jon Gall,Manuel Diaz,Yes,"BW/4HANA (AP00892)"
+205331,"Hobby Lobby Stores, Inc.",No,S/4 OP,BW OP,No,No,No,AWS/Redshift,No,,,Paul Smith,Asia-Rene Robinson,Yes,"SAP BW on HANA (AP00007)"
+189712,HollyFrontier Corporation,Yes,ECC OP,BW OP,No,No,No,Snowflake,No,Madhu Bangalore,Madhu Bangalore,Paul Smith,Jay Marcazzo,No,"SAP NetWeaver / BW (AP01009)"
+176888,Hunt Consolidated Inc.,Yes,S/4 RISE,BW/4 PCE,Yes - Existing,Yes - Existing,No,Other,Yes,Stephen DeCampos / Gregory Hoffman,Stephen DeCampos / Gregory Hoffman,Paul Smith,John Neylon,Yes,
+7288407,HUNTSMAN INTERNATIONAL LLC,Yes,S4RISE SOAR,BW OP,No,No,No,Other,Yes,Gregory P Cavalier,Gregory P Cavalier,Kelly Smith,James Wade,Yes,"SAP NetWeaver / BW (AP01009)"
+160733,Lennox International Inc,Yes,ECC OP,BW OP,No,No,No,Other,Yes,Sunil Bondapati,Sunil Bondapati,Paul Smith,Jordan Vanderheyden,Yes,"SAP BW on HANA (AP00007)"
+190852,Love Travels Stops,Yes,ECC OP,BW/4 OP,Yes - New,No,No,Snowflake,Yes,Karissa Stephenson,Bob Armstong,Paul Smith,Lauren Burns,Yes,"looking at S4 / ECC Rise. Recently Purchsed Datasphere w S4 Hana Runtime conversion."
+208962,"Lumen Technologies Service Group, L",Yes,S/4 RISE,BW OP,No,No,No,Other,Yes,Bernardo Fuentes / G,Bernardo Fuentes / I,Paul Smith,Brandon Stanley,Yes,"SAP S/4HANA 2022 PCE RISE"
+5660063,"ONEOK, Inc.",,,,,,,,,,Paul Smith,Jay Marcazzo,,
+14944426,Quiktrip Corporation,,,,,,,,,,Paul Smith,Lauren Burns,,
+28978000,Southwestern Energy,,,,,,,,,,Paul Smith,Lauren Burns,,
+6209483,Southwestern Energy Company,,,,,,,,,,,,
+6824822,Space Exploration Technologies Corp,,,,,,,,,,Paul Smith,Brandon Stanley,,
+162898,Texas Instruments Incorporated,Yes,ECC OP,BW OP,No,No,No,GCP/BigQuery,Yes,Paul Haltmond,Samir Agrawal,Paul Smith,John Neylon,Yes,
+173066,"Toyota Motor Sales, U.S.A., INC.",,,,,,,,,,Paul Smith,Brent McQuitty,,
+1730661,Toyota Financial,Yes,S/4 OP,No,Yes - New,No,No,Snowflake,No,Michael Valmidiano / Naeelesh Chitagi,,Paul Smith,Brent McQuitty,Yes,
+162789,Tyson Foods,Yes,S/4 RISE,BW OP,No,No,No,GCP/BigQuery,Yes,Scott Hobbs / Kevin W. Barret Miller,,Paul Smith,Asia-Rene Robinson,Yes,"SAP BW on HANA (AP00007)"
+166801,Williams Companies,,,,,,,,,,Paul Smith,Brandon Stanley,,

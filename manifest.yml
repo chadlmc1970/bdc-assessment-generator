@@ -1,0 +1,17 @@
+---
+# BTP Cloud Foundry Manifest - Fresh deployment (cache bypass)
+applications:
+  - name: bdc-assessment-v3
+    memory: 512M
+    instances: 1
+    buildpacks:
+      - nodejs_buildpack
+    path: .
+    command: node srv/server.js
+    services:
+      - bdc-hana-trial
+    env:
+      NODE_ENV: production
+      # ANTHROPIC_API_KEY set via cf set-env or user-provided service
+    health-check-type: http
+    health-check-http-endpoint: /health

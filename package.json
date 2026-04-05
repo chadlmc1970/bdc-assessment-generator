@@ -1,0 +1,51 @@
+{
+  "name": "bdc-assessment-generator",
+  "version": "1.0.0",
+  "description": "SAP BDC Strategic Assessment Generator - AI-powered consulting-grade assessments",
+  "main": "srv/server.js",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.0",
+    "@cap-js/hana": "^2.7.0",
+    "@sap/cds": "^9",
+    "@sap/hana-client": "^2.22",
+    "express": "^4.21.2",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^2.2.0",
+    "@sap/cds-dk": "^9",
+    "concurrently": "^9.2.1",
+    "sqlite3": "^6.0.1"
+  },
+  "scripts": {
+    "start": "node srv/server.js",
+    "start:cap": "cds watch",
+    "start:all": "concurrently \"cds watch\" \"node srv/server.js\"",
+    "deploy": "cf push",
+    "build": "cds build",
+    "test": "node srv/db-service.test.js"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "hana",
+        "credentials": {}
+      },
+      "[development]": {
+        "db": {
+          "kind": "sql",
+          "credentials": {
+            "url": "db.sqlite"
+          }
+        }
+      }
+    },
+    "hana": {
+      "deploy-format": "hdbtable"
+    }
+  },
+  "private": true
+}

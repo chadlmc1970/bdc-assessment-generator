@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDC Assessment - Scenario Dashboard</title>
+    <link rel="stylesheet" href="/css/app.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="top-bar-brand">
+                <img src="/images/sap-logo.jpg" alt="SAP Logo" class="top-bar-logo-img">
+                <span class="top-bar-title">BDC Assessment Generator</span>
+            </div>
+            <div class="top-bar-actions">
+                <button class="btn btn-ghost btn-sm" onclick="window.location.href='/wizard.html'">New Assessment</button>
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <span id="themeIcon"></span>
+                    <span id="themeLabel">Dark</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Dashboard Header -->
+        <div class="dash-header">
+            <div class="dash-header-left">
+                <div class="dash-badge">BDC Opportunity</div>
+                <h1 id="dashTitle">Investment Scenarios</h1>
+                <div class="dash-header-meta" id="dashMeta">
+                    <div class="meta-item">
+                        <span class="meta-label">Customer:</span>
+                        <span class="meta-value" id="metaCustomer">--</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">ERP:</span>
+                        <span class="meta-value" id="metaERP">--</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">BW:</span>
+                        <span class="meta-value" id="metaBW">--</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">ECIF:</span>
+                        <span class="meta-badge" id="metaECIF">--</span>
+                    </div>
+                </div>
+            </div>
+            <div class="dash-header-actions">
+                <button class="btn btn-outline btn-sm" onclick="exportMarkdown()">Export MD</button>
+                <button class="btn btn-primary btn-sm" onclick="exportPDF()">Export PDF</button>
+            </div>
+        </div>
+
+        <!-- KPI Row -->
+        <div class="kpi-row stagger" id="kpiRow">
+            <div class="card card-elevated kpi-card animate-fade-in-up">
+                <div class="kpi-value" id="kpiInvestment">--</div>
+                <div class="kpi-label">Total Investment</div>
+            </div>
+            <div class="card card-elevated kpi-card animate-fade-in-up">
+                <div class="kpi-value" id="kpiROI">--</div>
+                <div class="kpi-label">ROI</div>
+            </div>
+            <div class="card card-elevated kpi-card animate-fade-in-up">
+                <div class="kpi-value" id="kpiPayback">--</div>
+                <div class="kpi-label">Payback Period</div>
+            </div>
+            <div class="card card-elevated kpi-card animate-fade-in-up">
+                <div class="kpi-value" id="kpiNPV">--</div>
+                <div class="kpi-label">3-Year NPV</div>
+            </div>
+        </div>
+
+        <!-- Scenario Cards -->
+        <div class="scenario-cards stagger" id="scenarioCards">
+            <div class="card card-elevated scenario-card conservative animate-fade-in-up" data-scenario="conservative" onclick="selectScenario('conservative')">
+                <span class="badge badge-blue scenario-card-badge">Conservative</span>
+                <div class="scenario-card-investment" id="scConservativeInv">$1.2M</div>
+                <div class="scenario-card-stats">
+                    <div class="scenario-stat">
+                        <span class="scenario-stat-label">ROI</span>
+                        <span class="scenario-stat-value" id="scConservativeROI">75%</span>
+                    </div>
+                    <div class="scenario-stat">
+                        <span class="scenario-stat-label">Payback</span>
+                        <span class="scenario-stat-value" id="scConservativePayback">18 mo</span>
+                    </div>
+                    <div class="scenario-stat">
+                        <span class="scenario-stat-label">Timeline</span>
+                        <span class="scenario-stat-value" id="scConservativeTimeline">18 months</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-elevated scenario-card recommended active animate-fade-in-up" data-scenario="recommended" onclick="selectScenario('recommended')">
+                <div class="scenario-recommended-badge">Recommended</div>
+                <div class="scenario-badges-row">
+                    <span class="badge badge-green scenario-card-badge">Recommended</span>
+                    <span class="badge badge-gold scenario-card-badge" id="ecifBadge" style="display:none;">ECIF Eligible</span>
+                </div>
+                <div class="scenario-card-investment" id="scRecommendedInv">$2.5M</div>
+                <div class="scenario-card-stats">
+                    <div class="scenario-stat">
+                        <span class="scenario-stat-label">ROI</span>
+                        <span class="scenario-stat-value" id="scRecommendedROI">134%</span>
+                    </div>
+                    <div class="scenario-stat">
+                        <span class="scenario-stat-label">Payback</span>
+                        <span class="scenario-stat-value" id="scRecommendedPayback">12 mo</span>
+                    </div>
+                    <div class="scenario-stat">
+                        <span class="scenario-stat-label">Timeline</span>
+                        <span class="scenario-stat-value" id="scRecommendedTimeline">12 months</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-elevated scenario-card aggressive animate-fade-in-up" data-scenario="aggressive" onclick="selectScenario('aggressive')">
+                <span class="badge badge-orange scenario-card-badge">Aggressive</span>
+                <div class="scenario-card-investment" id="scAggressiveInv">$4.8M</div>
+                <div class="scenario-card-stats">
+                    <div class="scenario-stat">
+                        <span class="scenario-stat-label">ROI</span>
+                        <span class="scenario-stat-value" id="scAggressiveROI">180%</span>
+                    </div>
+                    <div class="scenario-stat">
+                        <span class="scenario-stat-label">Payback</span>
+                        <span class="scenario-stat-value" id="scAggressivePayback">9 mo</span>
+                    </div>
+                    <div class="scenario-stat">
+                        <span class="scenario-stat-label">Timeline</span>
+                        <span class="scenario-stat-value" id="scAggressiveTimeline">9 months</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sliders -->
+        <div class="card card-elevated sliders-section">
+            <div class="sliders-title">Customize Scenario</div>
+            <div class="slider-group">
+                <div class="slider-row">
+                    <div class="slider-header">
+                        <span class="slider-label">Timeline</span>
+                        <span class="slider-value" id="sliderTimelineValue">12 months</span>
+                    </div>
+                    <input type="range" id="sliderTimeline" min="6" max="24" value="12" step="1" oninput="onSliderChange()">
+                </div>
+                <div class="slider-row">
+                    <div class="slider-header">
+                        <span class="slider-label">Scope</span>
+                        <span class="slider-value" id="sliderScopeValue">75%</span>
+                    </div>
+                    <input type="range" id="sliderScope" min="25" max="100" value="75" step="5" oninput="onSliderChange()">
+                </div>
+                <div class="slider-row">
+                    <div class="slider-header">
+                        <span class="slider-label">Investment</span>
+                        <span class="slider-value" id="sliderInvestmentValue">$2.5M</span>
+                    </div>
+                    <input type="range" id="sliderInvestment" min="0.5" max="8.0" value="2.5" step="0.1" oninput="onSliderChange()">
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="charts-section">
+            <div class="card card-elevated chart-card">
+                <div class="chart-card-title">NPV Projection (24 months)</div>
+                <div class="chart-canvas-wrap">
+                    <canvas id="npvChart"></canvas>
+                </div>
+            </div>
+            <div class="card card-elevated chart-card">
+                <div class="chart-card-title">Payback Waterfall</div>
+                <div class="chart-canvas-wrap">
+                    <canvas id="paybackChart"></canvas>
+                </div>
+            </div>
+            <div class="card card-elevated chart-card">
+                <div class="chart-card-title">TCO Comparison (3 years)</div>
+                <div class="chart-canvas-wrap">
+                    <canvas id="tcoChart"></canvas>
+                </div>
+            </div>
+            <div class="card card-elevated chart-card">
+                <div class="chart-card-title">ROI by Scenario</div>
+                <div class="chart-canvas-wrap">
+                    <canvas id="roiChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Narrative -->
+        <div class="card card-elevated narrative-section">
+            <div class="narrative-header">
+                <div class="narrative-indicator"></div>
+                <span class="narrative-label">AI Strategic Narrative</span>
+            </div>
+            <div class="narrative-text" id="narrativeText">
+                <div class="narrative-loading">
+                    <div class="spinner spinner-dark"></div>
+                    <span>Generating analysis...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Bar -->
+        <div class="action-bar">
+            <button class="btn btn-ghost" onclick="window.location.href='/wizard.html'">Start Over</button>
+            <button class="btn btn-outline" onclick="exportMarkdown()">Export Markdown</button>
+            <button class="btn btn-primary" onclick="exportPDF()">Export PDF</button>
+        </div>
+
+        <!-- Enterprise Footer -->
+        <footer class="enterprise-footer">
+            <div class="footer-content">
+                <div class="footer-badge-group">
+                    <div class="footer-badge">
+                        <span class="badge-icon">✓</span>
+                        <span>Powered by SAP BTP</span>
+                    </div>
+                    <div class="footer-badge">
+                        <span class="badge-icon">🔒</span>
+                        <span>Enterprise Security</span>
+                    </div>
+                    <div class="footer-badge">
+                        <span class="badge-icon">⚡</span>
+                        <span>Real-time ECIF Calculations</span>
+                    </div>
+                </div>
+                <div class="footer-meta">
+                    <span>© 2026 SAP SE • Business Development Consulting</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>

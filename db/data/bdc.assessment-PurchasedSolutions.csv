@@ -1,0 +1,9 @@
+customerId,solutionArea,customerName,channel,activeACV,averageACV,exitACV,scv,tcv,contractStartDate,contractEndDate,contractStatus,supportLevel
+0000190852,Business Technology Platform,Loves Travel Stops & Country Stores,SAP,1668571.41,1668571.41,1668571.41,0,1663999.99,2015-12-04,2026-12-31,Active,Enterprise Support
+0000190852,Business Transformation Management,Loves Travel Stops & Country Stores,SAP,0,0,0,,0,2021-11-30,2024-11-29,Cancelled,Enterprise Support
+0000190852,Customer Experience,Loves Travel Stops & Country Stores,SAP,15074.43,15074.43,15074.43,0,15033.14,2014-04-14,2026-09-30,Active,Enterprise Support
+0000190852,Data & AI,Loves Travel Stops & Country Stores,SAP,1445451.81,1436703.13,1446254.9,0,7183516.28,2017-05-24,2029-12-31,Active,Enterprise Support
+0000190852,Finance and Spend Management,Loves Travel Stops & Country Stores,SAP,246032.76,245991.14,246032.76,0,1184459.73,2019-01-11,2029-05-29,Active,Enterprise Support
+0000190852,Human Capital Management,Loves Travel Stops & Country Stores,"Paradox, Inc. (AppCenter)",3484040.47,4210596.91,6289196.29,338201.11,20130263.39,2012-12-28,2029-12-31,Active,Preferred Success
+0000190852,Other,Loves Travel Stops & Country Stores,SAP,12246.17,18543.7,23565.04,6435.99,81496.78,2012-12-28,2029-12-31,Active,Preferred Success
+0000190852,Supply Chain Management,Loves Travel Stops & Country Stores,SAP,104126.98,104126.98,104126.98,0,520634.99,2019-05-30,2029-05-29,Active,Enterprise Support
