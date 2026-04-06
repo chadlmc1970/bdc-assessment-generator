@@ -1,0 +1,196 @@
+{
+  "matchedCustomers": 3,
+  "matchCriteria": {
+    "industry": ["Retail", "Travel", "Hospitality", "Fuel & Convenience"],
+    "orderVolume": [500, 15000],
+    "dataChallenge": ["Manual corrections", "Data quality", "System consolidation"],
+    "solutionType": ["Datasphere", "S4 Migration", "AI Core"]
+  },
+  "cases": [
+    {
+      "id": "CS-001",
+      "customerName": "Confidential - Regional Fuel Retailer",
+      "industry": "Retail - Fuel & Convenience",
+      "customerSize": "Large Enterprise",
+      "geography": "North America",
+      "profile": {
+        "locations": 500,
+        "employees": 8500,
+        "monthlyOrders": 12000,
+        "annualRevenue": "$2.1B",
+        "dataChallenge": "Manual order corrections consuming 240 hours/month, 18% error rate causing customer dissatisfaction"
+      },
+      "beforeState": {
+        "systems": "Legacy ECC 6.0, on-premise BW, Excel-based order reconciliation",
+        "painPoints": [
+          "18% of orders required manual correction",
+          "Average 4.5 hours per order correction cycle",
+          "No real-time visibility into order status",
+          "Siloed data across 500 locations"
+        ],
+        "annualCost": "$187,000 in manual correction labor"
+      },
+      "solution": {
+        "components": ["SAP Datasphere", "SAP AI Core", "Embedded analytics"],
+        "timeline": "5 months (planning to go-live)",
+        "investment": "$1.35M",
+        "approach": "Phased rollout: pilot 50 stores, scale to 500 over 3 months"
+      },
+      "outcome": {
+        "errorReduction": 0.85,
+        "detail": "18% → 2.7% error rate",
+        "timeSavings": "240 hours/month → 35 hours/month (85% reduction)",
+        "costSavings": "$159,000 annually",
+        "roi": 312,
+        "roiCalc": "3-year NPV: $4.2M return on $1.35M investment",
+        "payback": 14,
+        "paybackUnit": "months",
+        "additionalBenefits": [
+          "Real-time order tracking across all locations",
+          "Predictive error detection (catch 73% before order submission)",
+          "Customer satisfaction scores +18 points"
+        ]
+      },
+      "quote": "Datasphere + AI Core transformed our operations from reactive firefighting to predictive excellence. We went from spending 240 hours a month fixing errors to 35 hours—and most of those are edge cases the AI flagged proactively.",
+      "quotee": "VP of Operations",
+      "lessonsLearned": [
+        "Start with highest-error locations for quick wins",
+        "Invest in change management—store managers were skeptical initially",
+        "AI model accuracy improved 40% after 60 days of production data"
+      ]
+    },
+    {
+      "id": "CS-002",
+      "customerName": "Confidential - Mid-Market Hospitality Chain",
+      "industry": "Travel & Hospitality",
+      "customerSize": "Mid-Market",
+      "geography": "Global (US, Europe, Asia)",
+      "profile": {
+        "locations": 280,
+        "employees": 12000,
+        "monthlyOrders": 8500,
+        "annualRevenue": "$890M",
+        "dataChallenge": "14 siloed systems, inconsistent reporting, 3-week lag for financial close"
+      },
+      "beforeState": {
+        "systems": "ECC 6.0 EHP7, legacy BW, custom .NET apps, Salesforce CRM, 6 regional data marts",
+        "painPoints": [
+          "14 different systems with no single source of truth",
+          "Finance team spent 2 weeks per month reconciling reports",
+          "C-suite dashboards updated manually in PowerPoint",
+          "Regional GMs made decisions on 2-week-old data"
+        ],
+        "annualCost": "$320,000 in reporting labor + $150K consultant fees"
+      },
+      "solution": {
+        "components": ["ECC to S4 migration", "SAP Datasphere", "SAC embedded analytics"],
+        "timeline": "9 months (S4 migration + Datasphere in parallel)",
+        "investment": "$2.1M (S4: $1.3M, Datasphere: $800K)",
+        "approach": "Big-bang S4 cutover, phased Datasphere integration"
+      },
+      "outcome": {
+        "dataConsolidation": "Unified 14 systems into single Datasphere data model",
+        "reportingSpeed": "+78% faster insights (3 weeks → 3 days)",
+        "financialClose": "Reduced from 21 days to 8 days",
+        "roi": 215,
+        "roiCalc": "3-year NPV: $4.5M return on $2.1M investment",
+        "payback": 18,
+        "paybackUnit": "months",
+        "additionalBenefits": [
+          "Real-time GM dashboards (refreshed hourly)",
+          "CFO no longer needs external consultants for board reporting",
+          "Freed 1.5 FTEs from manual reporting to analytics"
+        ]
+      },
+      "quote": "Before Datasphere, we had 14 versions of the truth. Now we have one golden source, and our GMs make decisions on live data. It's not just a technical win—it's a cultural transformation.",
+      "quotee": "CIO",
+      "lessonsLearned": [
+        "Run S4 and Datasphere projects in parallel, not sequential",
+        "Involve finance team early—they became the biggest advocates",
+        "Don't underestimate historical data migration (added 6 weeks)"
+      ]
+    },
+    {
+      "id": "CS-003",
+      "customerName": "Confidential - Enterprise Retail Chain",
+      "industry": "Retail - Multi-Location",
+      "customerSize": "Enterprise",
+      "geography": "North America",
+      "profile": {
+        "locations": 750,
+        "employees": 40000,
+        "monthlyOrders": 15000,
+        "annualRevenue": "$5.6B",
+        "dataChallenge": "Legacy BW performance bottlenecks, 12-hour overnight batch jobs, cloud migration mandate"
+      },
+      "beforeState": {
+        "systems": "ECC on-premise, BW 7.5 on aging hardware, Tableau for dashboards",
+        "painPoints": [
+          "BW queries taking 30-90 seconds (user frustration)",
+          "Overnight batch jobs completing at 11am (missing morning meetings)",
+          "$2.3M annual data center costs",
+          "Unable to handle Black Friday traffic spikes"
+        ],
+        "annualCost": "$2.3M infrastructure + $850K support staff"
+      },
+      "solution": {
+        "components": ["BW/4 to Datasphere migration", "HANA Cloud", "SAP AI Core for demand forecasting"],
+        "timeline": "7 months (phased BW migration)",
+        "investment": "$2.65M",
+        "approach": "Wave-based: critical reports first, then historical migration, finally decommission BW"
+      },
+      "outcome": {
+        "performanceGain": "+320% query speed improvement",
+        "detail": "Average query: 45 seconds → 11 seconds",
+        "batchJobs": "12-hour overnight jobs → 2-hour incremental loads (real-time ready)",
+        "costReduction": "42% lower TCO ($3.15M → $1.83M annually)",
+        "costBreakdown": {
+          "infrastructure": "-$1.2M (no data center)",
+          "licensing": "-$250K (consumption-based)",
+          "operations": "+$180K (managed service fees)"
+        },
+        "roi": 189,
+        "roiCalc": "3-year NPV: $5.0M return on $2.65M investment",
+        "payback": 22,
+        "paybackUnit": "months",
+        "additionalBenefits": [
+          "Black Friday traffic scaled elastically (no outages)",
+          "Real-time inventory visibility enabled same-day ship-from-store",
+          "AI demand forecasting reduced stockouts 35%"
+        ]
+      },
+      "quote": "Moving from overnight batch to real-time changed everything. Our store managers now see inventory updates within minutes, not the next morning. And we decommissioned a $2.3M data center. Revolutionary.",
+      "quotee": "SVP of Technology",
+      "lessonsLearned": [
+        "Wave-based migration de-risks big bang approach",
+        "Keep BW parallel for 60 days (caught 3 edge-case bugs)",
+        "Cloud elasticity saved us during holiday peak—scaled 4x capacity in 2 hours"
+      ]
+    }
+  ],
+  "commonPatterns": {
+    "successFactors": [
+      "Executive sponsorship (CFO or COO level)",
+      "Pilot with high-impact use case (60-90 days to value)",
+      "Phased rollout to manage risk",
+      "Strong change management and user adoption focus",
+      "Integration with ERP modernization timeline"
+    ],
+    "typicalTimelines": {
+      "datasphereon
+
+ly": "3-5 months",
+      "datasphere+S4": "8-12 months",
+      "datasphereBW4Migration": "6-9 months"
+    },
+    "investmentRanges": {
+      "midMarket": "$800K-$1.5M",
+      "largeEnterprise": "$1.5M-$3.5M",
+      "global": "$3M+"
+    },
+    "averageROI": 227,
+    "averagePayback": 18,
+    "errorReduction": "70-90% across all cases",
+    "timeSavings": "60-85% in manual processes"
+  }
+}

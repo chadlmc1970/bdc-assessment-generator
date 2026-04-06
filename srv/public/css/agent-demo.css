@@ -1,0 +1,635 @@
+/* ============================================================
+   Agent Demo CSS - Apple-Inspired Dark Theme
+   Tighter spacing, professional animation, consulting-grade polish
+   ============================================================ */
+
+/* --- Dark Theme Override for Agent Demo --- */
+.agent-demo-page {
+    background: #1a1a1a;
+    color: #ffffff;
+    min-height: 100vh;
+}
+
+/* --- Container & Layout --- */
+.agent-demo-container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 32px 24px;
+}
+
+/* --- Phase Header --- */
+.agent-phase-header {
+    text-align: center;
+    margin-bottom: 40px;
+    animation: fadeInUp 0.6s ease-out both;
+}
+
+.agent-phase-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #007aff;
+    background: rgba(0, 122, 255, 0.12);
+    padding: 4px 12px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+.agent-phase-title {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 12px;
+    color: #ffffff;
+}
+
+.agent-phase-subtitle {
+    font-size: 17px;
+    font-weight: 500;
+    color: #98989d;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* --- Content Card --- */
+.agent-content-card {
+    background: #2a2a2a;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.agent-content-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.agent-content-card-elevated {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* --- Progress Indicator (4-step dots) --- */
+.agent-progress {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 32px;
+}
+
+.agent-progress-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.agent-progress-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.agent-progress-dot.active {
+    background: #007aff;
+    width: 12px;
+    height: 12px;
+    box-shadow: 0 0 12px rgba(0, 122, 255, 0.5);
+    animation: pulse 2s infinite;
+}
+
+.agent-progress-dot.completed {
+    background: #2fa82f;
+    width: 10px;
+    height: 10px;
+}
+
+.agent-progress-connector {
+    width: 40px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.15);
+    transition: all 0.3s ease;
+}
+
+.agent-progress-connector.completed {
+    background: #2fa82f;
+}
+
+/* --- Chat Bubble Styles --- */
+.agent-chat-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.agent-chat-bubble {
+    display: flex;
+    gap: 12px;
+    animation: fadeInUp 0.4s ease-out both;
+}
+
+.agent-chat-bubble.user {
+    flex-direction: row-reverse;
+}
+
+.agent-chat-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.agent-chat-bubble.user .agent-chat-avatar {
+    background: linear-gradient(135deg, #007aff, #5856d6);
+    color: #ffffff;
+}
+
+.agent-chat-bubble.assistant .agent-chat-avatar {
+    background: rgba(255, 255, 255, 0.12);
+    color: #007aff;
+    border: 1px solid rgba(0, 122, 255, 0.3);
+}
+
+.agent-chat-message {
+    max-width: 70%;
+    padding: 14px 18px;
+    border-radius: 16px;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.agent-chat-bubble.user .agent-chat-message {
+    background: #007aff;
+    color: #ffffff;
+    border-bottom-right-radius: 4px;
+}
+
+.agent-chat-bubble.assistant .agent-chat-message {
+    background: #2a2a2a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ebebf5;
+    border-bottom-left-radius: 4px;
+}
+
+/* --- Status Badge --- */
+.agent-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.agent-status-badge.processing {
+    background: rgba(0, 122, 255, 0.15);
+    color: #007aff;
+    border: 1px solid rgba(0, 122, 255, 0.3);
+}
+
+.agent-status-badge.completed {
+    background: rgba(47, 168, 47, 0.15);
+    color: #2fa82f;
+    border: 1px solid rgba(47, 168, 47, 0.3);
+}
+
+.agent-status-badge.waiting {
+    background: rgba(255, 149, 0, 0.15);
+    color: #ff9500;
+    border: 1px solid rgba(255, 149, 0, 0.3);
+}
+
+.agent-status-badge.error {
+    background: rgba(255, 59, 48, 0.15);
+    color: #ff3b30;
+    border: 1px solid rgba(255, 59, 48, 0.3);
+}
+
+.agent-status-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.agent-status-badge.processing .agent-status-indicator {
+    animation: pulse 1.5s infinite;
+}
+
+/* --- Button Styles --- */
+.agent-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1;
+    white-space: nowrap;
+    -webkit-font-smoothing: antialiased;
+}
+
+.agent-btn:active:not(:disabled) {
+    transform: scale(0.97);
+}
+
+.agent-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.agent-btn-primary {
+    background: #007aff;
+    color: #ffffff;
+}
+
+.agent-btn-primary:hover:not(:disabled) {
+    background: #0066cc;
+    box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
+}
+
+.agent-btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.agent-btn-secondary:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.agent-btn-ghost {
+    background: transparent;
+    color: #ebebf5;
+}
+
+.agent-btn-ghost:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.agent-btn-lg {
+    padding: 16px 32px;
+    font-size: 17px;
+}
+
+.agent-btn-sm {
+    padding: 8px 16px;
+    font-size: 13px;
+}
+
+.agent-btn-full {
+    width: 100%;
+}
+
+/* --- Animation Keyframes --- */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.6;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* --- Animation Classes --- */
+.agent-animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out both;
+}
+
+.agent-animate-slide-in {
+    animation: slideInRight 0.5s ease-out both;
+}
+
+.agent-animate-scale-in {
+    animation: scaleIn 0.4s ease-out both;
+}
+
+.agent-shimmer {
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.05) 0%,
+        rgba(255, 255, 255, 0.15) 50%,
+        rgba(255, 255, 255, 0.05) 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+}
+
+/* Stagger children animations */
+.agent-stagger > *:nth-child(1) { animation-delay: 0ms; }
+.agent-stagger > *:nth-child(2) { animation-delay: 100ms; }
+.agent-stagger > *:nth-child(3) { animation-delay: 200ms; }
+.agent-stagger > *:nth-child(4) { animation-delay: 300ms; }
+.agent-stagger > *:nth-child(5) { animation-delay: 400ms; }
+
+/* --- Spinner --- */
+.agent-spinner {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-top-color: #007aff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.agent-spinner-lg {
+    width: 36px;
+    height: 36px;
+    border-width: 3px;
+}
+
+/* --- Loading Skeleton --- */
+.agent-skeleton {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    animation: pulse 1.5s infinite;
+}
+
+.agent-skeleton-text {
+    height: 14px;
+    margin-bottom: 8px;
+}
+
+.agent-skeleton-text:last-child {
+    width: 70%;
+}
+
+.agent-skeleton-title {
+    height: 24px;
+    margin-bottom: 16px;
+}
+
+/* --- Section Divider --- */
+.agent-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 24px 0;
+}
+
+/* --- Info Block --- */
+.agent-info-block {
+    display: flex;
+    gap: 12px;
+    padding: 14px 16px;
+    background: rgba(0, 122, 255, 0.1);
+    border: 1px solid rgba(0, 122, 255, 0.2);
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+.agent-info-block-icon {
+    flex-shrink: 0;
+    font-size: 20px;
+    color: #007aff;
+}
+
+.agent-info-block-content {
+    flex: 1;
+}
+
+.agent-info-block-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 4px;
+}
+
+.agent-info-block-text {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #ebebf5;
+}
+
+/* --- Empty State --- */
+.agent-empty-state {
+    text-align: center;
+    padding: 60px 24px;
+}
+
+.agent-empty-state-icon {
+    font-size: 48px;
+    color: rgba(255, 255, 255, 0.2);
+    margin-bottom: 16px;
+}
+
+.agent-empty-state-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+.agent-empty-state-text {
+    font-size: 15px;
+    color: #98989d;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* --- Action Group --- */
+.agent-action-group {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 24px;
+}
+
+/* --- Responsive Breakpoints --- */
+@media (max-width: 768px) {
+    .agent-demo-container {
+        padding: 24px 16px;
+    }
+
+    .agent-phase-title {
+        font-size: 28px;
+    }
+
+    .agent-phase-subtitle {
+        font-size: 15px;
+    }
+
+    .agent-content-card {
+        padding: 20px;
+    }
+
+    .agent-chat-message {
+        max-width: 85%;
+    }
+
+    .agent-action-group {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .agent-btn {
+        width: 100%;
+    }
+
+    .agent-progress {
+        gap: 8px;
+    }
+
+    .agent-progress-connector {
+        width: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .agent-phase-title {
+        font-size: 24px;
+    }
+
+    .agent-chat-message {
+        max-width: 90%;
+        font-size: 14px;
+        padding: 12px 16px;
+    }
+
+    .agent-chat-avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+}
+
+/* --- Accessibility --- */
+.agent-btn:focus-visible {
+    outline: 2px solid #007aff;
+    outline-offset: 2px;
+}
+
+.agent-content-card:focus-visible {
+    outline: 2px solid #007aff;
+    outline-offset: 2px;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* --- Print Styles --- */
+@media print {
+    .agent-demo-page {
+        background: #ffffff;
+        color: #000000;
+    }
+
+    .agent-content-card {
+        border: 1px solid #cccccc;
+        box-shadow: none;
+    }
+
+    .agent-btn {
+        display: none;
+    }
+}
+
+/* --- Dark Mode Refinements --- */
+@supports (backdrop-filter: blur(20px)) {
+    .agent-content-card {
+        background: rgba(42, 42, 42, 0.85);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+    }
+}
+
+/* --- Performance Optimizations --- */
+.agent-content-card,
+.agent-btn,
+.agent-chat-bubble {
+    will-change: transform;
+}
+
+/* Only apply will-change during animations */
+.agent-animate-fade-in-up,
+.agent-animate-slide-in,
+.agent-animate-scale-in {
+    will-change: transform, opacity;
+}
+
+.agent-animate-fade-in-up.animation-complete,
+.agent-animate-slide-in.animation-complete,
+.agent-animate-scale-in.animation-complete {
+    will-change: auto;
+}

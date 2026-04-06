@@ -1,0 +1,73 @@
+{
+  "industry": "Retail & Travel",
+  "reportDate": "2026-Q1",
+  "reportId": "GARTNER-RT-2026-Q1",
+  "keyMetrics": {
+    "averageOrderErrorRate": 0.12,
+    "industryBenchmark": {
+      "topQuartile": 0.05,
+      "median": 0.12,
+      "bottomQuartile": 0.22
+    },
+    "manualCorrectionCostPerOrder": 15.50,
+    "typicalPaybackPeriod": 24,
+    "industryAverageROI": 185
+  },
+  "marketTrends": [
+    {
+      "trend": "Cloud ERP Adoption",
+      "description": "67% of retail/travel enterprises expected to complete cloud ERP migration by 2027",
+      "impact": "High",
+      "urgency": "Accelerating"
+    },
+    {
+      "trend": "Data Warehouse Consolidation",
+      "description": "Organizations consolidating from average of 4.2 data warehouses to 1-2 unified platforms",
+      "impact": "30-40% cost reduction",
+      "timeline": "18-24 months typical"
+    },
+    {
+      "trend": "AI-Powered Data Quality",
+      "description": "Leading organizations deploying ML-based data validation achieving 85% error reduction",
+      "adoption": "Early majority phase",
+      "investmentRange": "$500K-$3M"
+    },
+    {
+      "trend": "Hybrid Multi-Cloud Strategy",
+      "description": "56% of enterprises adopting multi-cloud data platforms (AWS, Azure, SAP BTP)",
+      "drivers": ["Best-of-breed", "Vendor independence", "Regulatory compliance"],
+      "preferred": "Retail/travel sector leaders"
+    }
+  ],
+  "competitiveLandscape": {
+    "pressure": "High",
+    "context": "Market leaders investing $2-5M annually in data modernization",
+    "laggardRisk": "Companies delaying modernization experiencing 15-25% margin erosion",
+    "leaderAdvantage": "Early adopters achieving 2-3x faster decision cycles"
+  },
+  "investmentPatterns": {
+    "averageInitialInvestment": 1850000,
+    "typicalRange": {
+      "conservative": 1000000,
+      "aggressive": 3500000
+    },
+    "fundingSources": [
+      "Operating budget (45%)",
+      "IT transformation funds (30%)",
+      "Vendor co-investment programs (25%)"
+    ]
+  },
+  "successFactors": [
+    "Executive sponsorship from CFO or COO level",
+    "Phased rollout with early wins (60-90 days)",
+    "Integration with existing ERP migration plans",
+    "Clear KPIs: error rate, processing time, cost per order",
+    "Change management and user adoption focus"
+  ],
+  "riskFactors": [
+    "Underestimating data cleanup effort (adds 20-30% to timeline)",
+    "Insufficient business process redesign",
+    "Legacy system retirement delays",
+    "User resistance to AI-powered workflows"
+  ]
+}

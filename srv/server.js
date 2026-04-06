@@ -16,6 +16,8 @@ const {
   searchCustomers,
   getCustomerWithEntitlements
 } = require('./db-service');
+const { analyzeCustomer } = require('./intelligence-service');
+const { streamAssessment } = require('./narrative-service');
 
 const PORT = process.env.PORT || 4005; // Changed from 4004 (CAP uses 4004)
 const anthropic = new Anthropic({
@@ -25,6 +27,10 @@ const anthropic = new Anthropic({
 const app = express();
 app.use(express.json());
 
+// Serve static files including PDFs
+app.use(express.static('srv/public'));
+app.use('/downloads', express.static('srv/public/downloads'));
+
 // Health check
 app.get('/health', async (req, res) => {
   res.status(200).json({
@@ -32,7 +38,9 @@ app.get('/health', async (req, res) => {
     service: 'bdc-assessment-generator-v3',
     version: '4.0.0',
     environment: process.env.NODE_ENV || 'development',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    intelligenceService: 'ready',
+    narrativeService: 'ready'
   });
 });
 
@@ -240,8 +248,19 @@ app.post('/api/export-pdf', async (req, res) => {
   }
 });
 
+// ===== NEW: Multi-Source Intelligence & Narrative Streaming =====
+
+// GET /api/intelligence/analyze-customer - Fetch multi-source data (CRM, Gartner, Benchmarks, Case Studies)
+app.get('/api/intelligence/analyze-customer', analyzeCustomer);
+
+// GET /api/narrative/stream-assessment - Stream pre-baked narrative via SSE
+app.get('/api/narrative/stream-assessment', streamAssessment);
+
+// ===== Legacy Chat Endpoint (SSE) =====
+
 // Serve static files - must be after API routes
 app.use(express.static('srv/public'));
+app.use('/downloads', express.static('srv/public/downloads'));
 
 // ===== Legacy chat endpoint (kept for backwards compatibility) =====
 app.get('/api/chat', async (req, res) => {

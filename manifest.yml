@@ -9,7 +9,7 @@ applications:
     path: .
     command: node srv/server.js
     services:
-      - bdc-hana-trial
+      - bdc-hdi-container
     env:
       NODE_ENV: production
       # ANTHROPIC_API_KEY set via cf set-env or user-provided service

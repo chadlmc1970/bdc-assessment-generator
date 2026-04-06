@@ -1,0 +1,47 @@
+VCAP_SERVICES:
+{
+  "hana": [
+    {
+      "name": "bdc-hdi-container",
+      "label": "hana",
+      "credentials": {
+        "schema": "3692CD57B84C431FBF11F52F73AEA96E",
+        "database_id": "ca5008ef-0e5d-4f8b-8a21-66d77f481dfc",
+        "user": "3692CD57B84C431FBF11F52F73AEA96E_3MO0ZG9MGNJSJ1WJXHQY5VWRW_RT",
+        "hdi_user": "3692CD57B84C431FBF11F52F73AEA96E_3MO0ZG9MGNJSJ1WJXHQY5VWRW_DT"
+      },
+      "tags": [
+        "hana"
+      ]
+    }
+  ]
+}
+@sap/hdi-deploy, version 5.6.1 (mode default), server version unknown (0.0.0.0), cloud version , node version 25.2.1, HDI version -1, container API version -1
+Deployment started at 2026-04-05 15:04:10
+Using @sap/hana-client@2.28.19 for connection
+Detection of server version failed; root cause: Connection failed (RTE:[89013] Socket closed by peer {192.168.68.96:61236 -> 54.243.250.77:443} (192.168.68.96:61236 -> ca5008ef-0e5d-4f8b-8a21-66d77f481dfc.hna1.prod-us10.hanacloud.ondemand.com:443))
+Detection of cloud version failed; root cause: Connection failed (RTE:[89013] Socket closed by peer {192.168.68.96:61237 -> 54.243.250.77:443} (192.168.68.96:61237 -> ca5008ef-0e5d-4f8b-8a21-66d77f481dfc.hna1.prod-us10.hanacloud.ondemand.com:443))
+Detection of container API version failed; root cause: Connection failed (RTE:[89013] Socket closed by peer {192.168.68.96:61238 -> 54.243.250.77:443} (192.168.68.96:61238 -> ca5008ef-0e5d-4f8b-8a21-66d77f481dfc.hna1.prod-us10.hanacloud.ondemand.com:443))
+Detection of HDI version failed; root cause: Connection failed (RTE:[89013] Socket closed by peer {192.168.68.96:61239 -> 54.243.250.77:443} (192.168.68.96:61239 -> ca5008ef-0e5d-4f8b-8a21-66d77f481dfc.hna1.prod-us10.hanacloud.ondemand.com:443))
+The server does not support live updating of make messages. The messages will be displayed, when the make is done.
+No ignore file at /Users/I870089/bdc-assessment-generator/gen/db/.hdiignore.
+Collecting files...
+Collecting files... ok (0s 5ms)
+3 directories collected
+29 files collected
+0 reusable modules collected
+Target service: bdc-hdi-container
+Could not check if session variable APPLICATION is set correctly: Connection failed (RTE:[89013] Socket closed by peer {192.168.68.96:61240 -> 54.243.250.77:443} (192.168.68.96:61240 -> ca5008ef-0e5d-4f8b-8a21-66d77f481dfc.hna1.prod-us10.hanacloud.ondemand.com:443))
+Could not determine status of last build: Connection failed (RTE:[89013] Socket closed by peer {192.168.68.96:61241 -> 54.243.250.77:443} (192.168.68.96:61241 -> ca5008ef-0e5d-4f8b-8a21-66d77f481dfc.hna1.prod-us10.hanacloud.ondemand.com:443))
+Processing revoke files...
+Processing revoke files... ok (0s 0ms)
+Processing grants files...
+Processing grants files... ok (0s 0ms)
+Preprocessing files...
+Preprocessing files... ok (0s 0ms)
+Connecting to the container "3692CD57B84C431FBF11F52F73AEA96E"...
+Deployment to container 3692CD57B84C431FBF11F52F73AEA96E failed - error: Connection failed (RTE:[89013] Socket closed by peer {192.168.68.96:61242 -> 54.243.250.77:443} (192.168.68.96:61242 -> ca5008ef-0e5d-4f8b-8a21-66d77f481dfc.hna1.prod-us10.hanacloud.ondemand.com:443)) [Deployment ID: none].
+Deployment ended at 2026-04-05 15:04:10
+Error: Connection failed (RTE:[89013] Socket closed by peer {192.168.68.96:61242 -> 54.243.250.77:443} (192.168.68.96:61242 -> ca5008ef-0e5d-4f8b-8a21-66d77f481dfc.hna1.prod-us10.hanacloud.ondemand.com:443))
+(1s 168ms)
+

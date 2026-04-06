@@ -1,0 +1,322 @@
+<h2>AI Agent Demo - 4 Phase Flow</h2>
+<p class="subtitle">Interactive mockup showing Discovery → Briefing → Generation → Results</p>
+
+<div class="section">
+  <h3>Flow Overview</h3>
+  <p>This demo shows how an agentic AI system guides an Account Executive through BDC assessment generation.</p>
+</div>
+
+<!-- Phase Navigation -->
+<div style="display: flex; gap: 12px; margin: 32px 0; padding: 16px; background: #f5f5f5; border-radius: 8px;">
+  <button class="mock-button" onclick="showPhase(0)" id="btn0" style="background: #007aff; color: white;">Phase 0: Discovery</button>
+  <button class="mock-button" onclick="showPhase(1)" id="btn1">Phase 1: Briefing</button>
+  <button class="mock-button" onclick="showPhase(2)" id="btn2">Phase 2: Generation</button>
+  <button class="mock-button" onclick="showPhase(3)" id="btn3">Phase 3: Results</button>
+</div>
+
+<!-- Phase 0: Discovery -->
+<div class="mockup phase-container" id="phase0">
+  <div class="mockup-header">Phase 0: Discovery (15 seconds)</div>
+  <div class="mockup-body" style="padding: 32px; background: #000; color: #fff;">
+    <div style="text-align: center; margin-bottom: 24px;">
+      <div style="font-size: 20px; font-weight: 600; margin-bottom: 8px;">Love's Travel Stops</div>
+      <div style="font-size: 14px; color: #888;">Extracting data from SAP systems...</div>
+    </div>
+
+    <div style="max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px;">
+      <div style="display: flex; align-items: center; gap: 12px; padding: 16px; background: #1c1c1e; border-radius: 12px;">
+        <span style="font-size: 24px;">✅</span>
+        <div style="flex: 1;">
+          <div style="font-weight: 600; margin-bottom: 4px;">Found 897 active orders</div>
+          <div style="font-size: 13px; color: #888;">Retail and logistics operations</div>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 12px; padding: 16px; background: #1c1c1e; border-radius: 12px;">
+        <span style="font-size: 24px;">✅</span>
+        <div style="flex: 1;">
+          <div style="font-weight: 600; margin-bottom: 4px;">BW 7.5 on-premises detected</div>
+          <div style="font-size: 13px; color: #888;">Mature analytics capability identified</div>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 12px; padding: 16px; background: #1c1c1e; border-radius: 12px;">
+        <span style="font-size: 24px;">✅</span>
+        <div style="flex: 1;">
+          <div style="font-weight: 600; margin-bottom: 4px;">Azure + Snowflake confirmed</div>
+          <div style="font-size: 13px; color: #888;">Cloud data platform in use</div>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 12px; padding: 16px; background: #1c1c1e; border-radius: 12px; border: 1px solid #3f9fe8;">
+        <span style="font-size: 24px;">✅</span>
+        <div style="flex: 1;">
+          <div style="font-weight: 600; margin-bottom: 4px; color: #3f9fe8;">ECIF eligible (25% co-funding)</div>
+          <div style="font-size: 13px; color: #888;">Snowflake qualifies for $950K funding</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 32px; color: #888; font-size: 13px;">
+      Auto-advances to Briefing after 15 seconds
+    </div>
+  </div>
+</div>
+
+<!-- Phase 1: Briefing -->
+<div class="mockup phase-container" id="phase1" style="display: none;">
+  <div class="mockup-header">Phase 1: Briefing (AE Approval Gate)</div>
+  <div class="mockup-body" style="padding: 32px; background: #000; color: #fff;">
+    <div style="max-width: 700px; margin: 0 auto;">
+
+      <!-- Agent Message Card -->
+      <div style="background: #1c1c1e; border-radius: 16px; padding: 24px; margin-bottom: 24px;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+          <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #3f9fe8 0%, #5e7fff 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px;">🤖</div>
+          <div style="font-size: 12px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px;">Analysis Complete</div>
+        </div>
+
+        <div style="line-height: 1.6;">
+          <p style="margin-bottom: 16px;">I've analyzed Love's Travel Stops. Here's what I found:</p>
+
+          <div style="font-size: 12px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin: 20px 0 8px;">Key Facts</div>
+          <ul style="list-style: none; padding: 0;">
+            <li style="padding: 6px 0 6px 24px; position: relative; font-size: 14px;">
+              <span style="position: absolute; left: 0; color: #3f9fe8; font-weight: bold;">•</span>
+              897 active SAP orders across retail and logistics operations
+            </li>
+            <li style="padding: 6px 0 6px 24px; position: relative; font-size: 14px;">
+              <span style="position: absolute; left: 0; color: #3f9fe8; font-weight: bold;">•</span>
+              Currently using Snowflake data lake (excellent ECIF co-sell opportunity)
+            </li>
+            <li style="padding: 6px 0 6px 24px; position: relative; font-size: 14px;">
+              <span style="position: absolute; left: 0; color: #3f9fe8; font-weight: bold;">•</span>
+              Estimated $7.6M annual SAP spend based on order volume
+            </li>
+            <li style="padding: 6px 0 6px 24px; position: relative; font-size: 14px;">
+              <span style="position: absolute; left: 0; color: #3f9fe8; font-weight: bold;">•</span>
+              Strong BW/BEx usage indicating mature analytics capability
+            </li>
+          </ul>
+
+          <div style="font-size: 12px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin: 20px 0 8px;">Strategic Context</div>
+          <p style="font-size: 14px; margin-bottom: 16px;">Love's is a prime candidate for SAP Datasphere + AI Core modernization. Their Snowflake investment shows commitment to cloud, and ECIF co-funding (25%) makes this highly competitive.</p>
+
+          <div style="font-size: 12px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin: 20px 0 8px;">Recommended Approach</div>
+          <p style="font-size: 14px;">3-phase rollout over 12 months with focus on operational cost reduction.</p>
+        </div>
+
+        <!-- Buttons -->
+        <div style="display: flex; gap: 12px; margin-top: 24px;">
+          <button class="mock-button" style="flex: 1; padding: 14px; background: #3f9fe8; color: white; border: none; border-radius: 10px; font-weight: 600; font-size: 15px;">Generate Assessment</button>
+          <button class="mock-button" style="flex: 1; padding: 14px; background: #2c2c2e; color: white; border: none; border-radius: 10px; font-weight: 600; font-size: 15px;">Adjust Assumptions</button>
+        </div>
+      </div>
+
+      <div style="text-align: center; color: #888; font-size: 13px;">
+        AE reviews and approves before generation starts
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Phase 2: Generation -->
+<div class="mockup phase-container" id="phase2" style="display: none;">
+  <div class="mockup-header">Phase 2: Generation (90 seconds)</div>
+  <div class="mockup-body" style="padding: 32px; background: #000; color: #fff;">
+    <div style="max-width: 700px; margin: 0 auto;">
+
+      <!-- Progress Card -->
+      <div style="background: #1c1c1e; border-radius: 16px; padding: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <div style="font-size: 17px; font-weight: 600;">Generating Assessment</div>
+          <div style="font-size: 28px; font-weight: 700; color: #3f9fe8; font-variant-numeric: tabular-nums;">45%</div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div style="height: 4px; background: #2c2c2e; border-radius: 2px; overflow: hidden; margin-bottom: 24px;">
+          <div style="height: 100%; background: linear-gradient(90deg, #3f9fe8 0%, #5e7fff 100%); width: 45%;"></div>
+        </div>
+
+        <!-- Reasoning Section -->
+        <div style="background: #2c2c2e; border-radius: 12px; padding: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <div style="font-size: 12px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px;">Agent Reasoning</div>
+            <div style="font-size: 11px; color: #3f9fe8; font-weight: 600; cursor: pointer;">Hide</div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+              <span style="font-size: 18px;">✅</span>
+              <div style="flex: 1;">
+                <div style="font-weight: 500; margin-bottom: 2px;">Customer profile analyzed</div>
+                <div style="font-size: 12px; color: #888;">897 orders detected, $7.6M annual spend estimated</div>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+              <span style="font-size: 18px;">✅</span>
+              <div style="flex: 1;">
+                <div style="font-weight: 500; margin-bottom: 2px;">Financial scenarios calculated</div>
+                <div style="font-size: 12px; color: #888;">Conservative, Recommended, Aggressive models complete</div>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+              <span style="font-size: 18px;">✅</span>
+              <div style="flex: 1;">
+                <div style="font-weight: 500; margin-bottom: 2px;">ECIF eligibility confirmed</div>
+                <div style="font-size: 12px; color: #888;">Snowflake detected → 25% co-funding available ($950K)</div>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+              <span style="font-size: 18px;">🔄</span>
+              <div style="flex: 1;">
+                <div style="font-weight: 500; margin-bottom: 2px;">Generating Section 3: Industry Context</div>
+                <div style="font-size: 12px; color: #888;">Benchmarking against retail/logistics peers</div>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; padding: 10px 0;">
+              <span style="font-size: 18px;">⏳</span>
+              <div style="flex: 1;">
+                <div style="font-weight: 500; margin-bottom: 2px; color: #888;">Pending: Sections 4-8</div>
+                <div style="font-size: 12px; color: #666;">Future state, scenarios, risks, roadmap</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 24px; color: #888; font-size: 13px;">
+        15 reasoning steps appear sequentially over 90 seconds
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Phase 3: Results -->
+<div class="mockup phase-container" id="phase3" style="display: none;">
+  <div class="mockup-header">Phase 3: Results (Interactive)</div>
+  <div class="mockup-body" style="padding: 32px; background: #000; color: #fff;">
+    <div style="max-width: 700px; margin: 0 auto;">
+
+      <!-- Success Banner -->
+      <div style="display: flex; align-items: center; gap: 12px; padding: 16px 0; margin-bottom: 24px;">
+        <span style="font-size: 32px;">✅</span>
+        <span style="font-size: 20px; font-weight: 600; color: #4db84d;">Assessment Complete</span>
+      </div>
+
+      <!-- PDF Card 1 -->
+      <div style="background: #1c1c1e; border-radius: 16px; padding: 20px; margin-bottom: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+          <div>
+            <div style="font-size: 17px; font-weight: 600; margin-bottom: 4px;">Executive Summary</div>
+            <div style="font-size: 13px; color: #888;">11 pages</div>
+          </div>
+          <button class="mock-button" style="padding: 10px 20px; background: #3f9fe8; color: white; border: none; border-radius: 8px; font-weight: 600;">Download</button>
+        </div>
+        <div style="font-size: 14px; color: #ccc; line-height: 1.6; margin-top: 16px;">
+          Love's Travel Stops has a compelling opportunity to modernize their data platform with SAP Datasphere and AI Core. With 897 active orders and $7.6M in annual SAP spend, they are well-positioned for a 3-phase transformation...
+        </div>
+      </div>
+
+      <!-- PDF Card 2 with Scenarios -->
+      <div style="background: #1c1c1e; border-radius: 16px; padding: 20px; margin-bottom: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+          <div>
+            <div style="font-size: 17px; font-weight: 600; margin-bottom: 4px;">Financial Appendix</div>
+            <div style="font-size: 13px; color: #888;">10 pages • 3 scenarios</div>
+          </div>
+          <button class="mock-button" style="padding: 10px 20px; background: #3f9fe8; color: white; border: none; border-radius: 8px; font-weight: 600;">Download</button>
+        </div>
+
+        <!-- Scenario Cards -->
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px;">
+          <!-- Conservative -->
+          <div style="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px; text-align: center;">
+            <div style="font-size: 11px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;">Conservative</div>
+            <div style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">$2.1M</div>
+            <div style="font-size: 24px; font-weight: 700; color: #4db84d; margin-bottom: 4px;">215%</div>
+            <div style="font-size: 11px; color: #888;">23mo payback</div>
+          </div>
+
+          <!-- Recommended -->
+          <div style="background: rgba(63,159,232,0.1); border: 1px solid #3f9fe8; border-radius: 12px; padding: 16px; text-align: center;">
+            <div style="font-size: 11px; font-weight: 600; color: #3f9fe8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;">✓ Recommended</div>
+            <div style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">$3.8M</div>
+            <div style="font-size: 24px; font-weight: 700; color: #4db84d; margin-bottom: 4px;">227%</div>
+            <div style="font-size: 11px; color: #888;">18mo payback</div>
+          </div>
+
+          <!-- Aggressive -->
+          <div style="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px; text-align: center;">
+            <div style="font-size: 11px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;">Aggressive</div>
+            <div style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">$6.2M</div>
+            <div style="font-size: 24px; font-weight: 700; color: #4db84d; margin-bottom: 4px;">227%</div>
+            <div style="font-size: 11px; color: #888;">16mo payback</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Refinement Section -->
+      <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1);">
+        <div style="font-size: 13px; font-weight: 600; color: #888; margin-bottom: 12px;">Need changes?</div>
+        <div style="display: flex; gap: 12px;">
+          <input class="mock-input" style="flex: 1; background: #2c2c2e; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px 16px; font-size: 15px; color: white;" placeholder='e.g., "Make it more aggressive"' />
+          <button class="mock-button" style="padding: 12px 24px; background: #3f9fe8; color: white; border: none; border-radius: 10px; font-weight: 600; font-size: 15px;">Refine</button>
+        </div>
+        <div style="text-align: center; margin-top: 16px; color: #888; font-size: 13px;">
+          Refine button triggers 30s regeneration → returns to results
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top: 48px;">
+  <h3>Design Notes</h3>
+  <ul style="line-height: 1.8;">
+    <li><strong>Discovery:</strong> Shows agent extracting from SAP systems (15s auto-advance)</li>
+    <li><strong>Briefing:</strong> AE approval gate with strategic context (user-controlled)</li>
+    <li><strong>Generation:</strong> Progress bar + collapsible reasoning (90s auto-advance)</li>
+    <li><strong>Results:</strong> Real PDF downloads + functional refinement loop</li>
+    <li><strong>Styling:</strong> Dark theme, Apple design system, smooth animations</li>
+    <li><strong>Data:</strong> Love's facts match FINANCIAL-AUDIT.md (897 orders, $7.6M, ROI 215%/227%/227%)</li>
+  </ul>
+</div>
+
+<div class="section">
+  <p class="label" style="margin-bottom: 8px;">Questions for Review:</p>
+  <ol style="line-height: 1.8;">
+    <li>Does the Discovery phase timing (15s) feel right?</li>
+    <li>Should Briefing have a countdown timer or stay indefinite until AE clicks?</li>
+    <li>Is the Generation progress bar granular enough (90s with 15 steps)?</li>
+    <li>Should scenario cards be clickable (select one)?</li>
+    <li>Any changes to the visual style or layout?</li>
+  </ol>
+</div>
+
+<script>
+function showPhase(num) {
+  // Hide all phases
+  document.querySelectorAll('.phase-container').forEach(p => p.style.display = 'none');
+
+  // Show selected phase
+  document.getElementById('phase' + num).style.display = 'block';
+
+  // Update button styles
+  for (let i = 0; i <= 3; i++) {
+    const btn = document.getElementById('btn' + i);
+    if (i === num) {
+      btn.style.background = '#007aff';
+      btn.style.color = 'white';
+    } else {
+      btn.style.background = 'transparent';
+      btn.style.color = '#007aff';
+      btn.style.border = '1px solid #007aff';
+    }
+  }
+}
+</script>

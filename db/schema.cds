@@ -33,7 +33,7 @@ entity CloudSystems {
       solutionArea        : String(255);
       subSolutionArea     : String(255);
       dataCenterExternal  : String(100);
-      dataCenterInternal  : String(100);
+      dataCenterInternal  : String(255);
       createdOn           : Date;
       mainUrl             : String(500);
 }

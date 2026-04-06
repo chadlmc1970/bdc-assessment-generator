@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Demo - BDC Assessment Generator</title>
+    <meta name="description" content="Interactive demonstration of AI-powered assessment generation with Claude Sonnet 4.6">
+    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="/css/agent-demo.css">
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-bar" style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; border-bottom: 1px solid var(--separator); margin-bottom: 32px;">
+            <div style="font-size: 24px; font-weight: 600; letter-spacing: -0.5px;">BDC Assessment</div>
+            <div class="customer-badge">Love's Travel Stops</div>
+        </div>
+
+        <!-- Phase 1: Briefing -->
+        <div id="phase1" class="phase active">
+            <div class="message">
+                <div class="message-header">
+                    <div class="avatar">🤖</div>
+                    <div class="message-label">Analysis Complete</div>
+                </div>
+
+                <div class="message-content">
+                    <p>I've analyzed Love's Travel Stops. Here's what I found:</p>
+
+                    <div class="section-title">Key Facts</div>
+                    <ul class="fact-list">
+                        <li>897 active SAP orders across retail and logistics operations</li>
+                        <li>Currently using Snowflake data lake (excellent ECIF co-sell opportunity)</li>
+                        <li>Estimated $7.6M annual SAP spend based on order volume</li>
+                        <li>Strong BW/BEx usage indicating mature analytics capability</li>
+                    </ul>
+
+                    <div class="section-title">Strategic Context</div>
+                    <p>Love's is a prime candidate for SAP Datasphere + AI Core modernization. Their Snowflake investment shows commitment to cloud, and ECIF co-funding (25%) makes this highly competitive.</p>
+
+                    <div class="section-title">Recommended Approach</div>
+                    <p>3-phase rollout over 12 months with focus on operational cost reduction.</p>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="showPhase(2)">Generate Assessment</button>
+                    <button class="btn btn-secondary">Adjust Assumptions</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phase 2: Generation -->
+        <div id="phase2" class="phase">
+            <div class="progress-card">
+                <div class="progress-header">
+                    <div class="progress-title">Generating Assessment</div>
+                    <div class="progress-percent">0%</div>
+                </div>
+
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill"></div>
+                </div>
+
+                <div class="reasoning">
+                    <div class="reasoning-header" onclick="toggleReasoning()">
+                        <div class="reasoning-title">Agent Reasoning</div>
+                        <div class="reasoning-toggle">Hide</div>
+                    </div>
+
+                    <div class="reasoning-steps"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phase 3: Results -->
+        <div id="phase3" class="phase">
+            <div class="success-banner">
+                <div class="success-icon">✅</div>
+                <div class="success-text">Assessment Complete</div>
+            </div>
+
+            <div class="pdf-card">
+                <div class="pdf-header">
+                    <div>
+                        <div class="pdf-title">Executive Summary</div>
+                        <div class="pdf-subtitle">11 pages</div>
+                    </div>
+                    <button class="btn btn-primary">Download</button>
+                </div>
+                <div class="pdf-preview">
+                    Love's Travel Stops has a compelling opportunity to modernize their data platform with SAP Datasphere and AI Core. With 897 active orders and $7.6M in annual SAP spend, they are well-positioned for a 3-phase transformation...
+                </div>
+            </div>
+
+            <div class="pdf-card">
+                <div class="pdf-header">
+                    <div>
+                        <div class="pdf-title">Financial Appendix</div>
+                        <div class="pdf-subtitle">10 pages • 3 scenarios</div>
+                    </div>
+                    <button class="btn btn-primary">Download</button>
+                </div>
+
+                <div class="scenarios">
+                    <div class="scenario">
+                        <div class="scenario-label">Conservative</div>
+                        <div class="scenario-investment">$2.1M</div>
+                        <div class="scenario-roi">215%</div>
+                        <div class="scenario-payback">23mo payback</div>
+                    </div>
+
+                    <div class="scenario recommended">
+                        <div class="scenario-label">✓ Recommended</div>
+                        <div class="scenario-investment">$3.8M</div>
+                        <div class="scenario-roi">227%</div>
+                        <div class="scenario-payback">18mo payback</div>
+                    </div>
+
+                    <div class="scenario">
+                        <div class="scenario-label">Aggressive</div>
+                        <div class="scenario-investment">$6.2M</div>
+                        <div class="scenario-roi">227%</div>
+                        <div class="scenario-payback">16mo payback</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="refinement">
+                <div class="refinement-label">Need changes?</div>
+                <div class="refinement-input">
+                    <input type="text" placeholder='e.g., "Make it more aggressive"'>
+                    <button class="btn btn-primary" onclick="refineAssessment()">Refine</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Demo Navigation -->
+    <div class="demo-nav">
+        <button class="active" onclick="showPhase(1)">Briefing</button>
+        <button onclick="showPhase(2)">Generation</button>
+        <button onclick="showPhase(3)">Results</button>
+    </div>
+
+    <script src="/demo-data.js"></script>
+    <script src="/js/agent-demo.js"></script>
+</body>
+</html>

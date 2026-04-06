@@ -257,6 +257,9 @@ function showCustomerConfirm(c) {
                 <button class="btn btn-primary btn-full" onclick="startInterview()">
                     Start Assessment Interview
                 </button>
+                <button class="btn btn-secondary btn-full" onclick="startAgentDemo()" style="margin-top:12px;">
+                    Try AI Agent Mode (Demo)
+                </button>
             </div>
             <div style="text-align:center; margin-top:10px;">
                 <button class="btn btn-ghost btn-sm" onclick="resetSearch()">Choose different customer</button>
@@ -518,4 +521,13 @@ function navigateToDashboard(data) {
     sessionStorage.setItem('customerData', JSON.stringify(data.customer || state.customer));
     sessionStorage.setItem('interviewAnswers', JSON.stringify(data.interviewAnswers || state.answers));
     window.location.href = '/dashboard.html';
+}
+
+// Agent Demo Mode
+function startAgentDemo() {
+    if (!state.customer) {
+        alert('Please select a customer first');
+        return;
+    }
+    window.location.href = `/agent-demo.html?customer=${state.customer.id}`;
 }

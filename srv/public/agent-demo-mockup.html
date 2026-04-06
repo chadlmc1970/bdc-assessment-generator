@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDC AI Agent - UI Mockup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: #0070f3;
+        }
+
+        .customer-tag {
+            background: #e3f2fd;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        /* Agent Message */
+        .agent-message {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 24px;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .agent-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .agent-avatar {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .agent-name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .briefing-section {
+            margin: 16px 0;
+        }
+
+        .briefing-section h3 {
+            font-size: 14px;
+            margin-bottom: 8px;
+            opacity: 0.9;
+        }
+
+        .briefing-section ul {
+            list-style: none;
+            margin: 8px 0;
+        }
+
+        .briefing-section li {
+            padding: 4px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .briefing-section li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #667eea;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        /* Progress Section */
+        .progress-section {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .progress-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .progress-percentage {
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: #e9ecef;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 45%;
+            transition: width 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Reasoning Panel */
+        .reasoning-panel {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .reasoning-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+
+        .reasoning-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: #495057;
+        }
+
+        .reasoning-toggle {
+            color: #667eea;
+            font-size: 12px;
+        }
+
+        .reasoning-steps {
+            margin-top: 12px;
+        }
+
+        .reasoning-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .reasoning-step:last-child {
+            border-bottom: none;
+        }
+
+        .reasoning-icon {
+            font-size: 20px;
+            min-width: 24px;
+        }
+
+        .reasoning-content {
+            flex: 1;
+        }
+
+        .reasoning-text {
+            font-size: 14px;
+            color: #495057;
+            font-weight: 500;
+        }
+
+        .reasoning-detail {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 4px;
+        }
+
+        /* Results Section */
+        .results-section {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .success-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .success-icon {
+            font-size: 32px;
+        }
+
+        .success-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #28a745;
+        }
+
+        .pdf-card {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 16px 0;
+        }
+
+        .pdf-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .pdf-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .pdf-pages {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .pdf-preview {
+            font-size: 14px;
+            color: #495057;
+            line-height: 1.6;
+            margin: 12px 0;
+        }
+
+        .scenario-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .scenario-card {
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .scenario-card.recommended {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .scenario-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6c757d;
+            margin-bottom: 8px;
+        }
+
+        .scenario-card.recommended .scenario-label {
+            color: #667eea;
+        }
+
+        .scenario-investment {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .scenario-roi {
+            font-size: 24px;
+            font-weight: 700;
+            color: #28a745;
+            margin-bottom: 4px;
+        }
+
+        .scenario-payback {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        /* Refinement Input */
+        .refinement-section {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .refinement-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .refinement-input {
+            display: flex;
+            gap: 12px;
+        }
+
+        .refinement-input input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .refinement-input input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* Phase Toggle */
+        .phase-toggle {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .phase-toggle button {
+            flex: 1;
+            padding: 8px 16px;
+            border: 1px solid #dee2e6;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .phase-toggle button.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .phase-content {
+            display: none;
+        }
+
+        .phase-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 BDC AI Assessment Agent</h1>
+            <div class="customer-tag">Love's Travel Stops</div>
+        </div>
+
+        <!-- Phase Toggle (for mockup review) -->
+        <div class="phase-toggle">
+            <button class="active" onclick="showPhase(1)">Phase 1: Briefing</button>
+            <button onclick="showPhase(2)">Phase 2: Generation</button>
+            <button onclick="showPhase(3)">Phase 3: Results</button>
+        </div>
+
+        <!-- Phase 1: Agent Briefing -->
+        <div id="phase1" class="phase-content active">
+            <div class="agent-message">
+                <div class="agent-header">
+                    <div class="agent-avatar">🤖</div>
+                    <div class="agent-name">AI Assessment Agent</div>
+                </div>
+
+                <p style="margin-bottom: 16px;">I've analyzed Love's Travel Stops. Here's what I found:</p>
+
+                <div class="briefing-section">
+                    <h3>📊 Key Facts:</h3>
+                    <ul>
+                        <li>897 active SAP orders across retail and logistics operations</li>
+                        <li>Currently using Snowflake data lake (excellent ECIF co-sell opportunity)</li>
+                        <li>Estimated $7.6M annual SAP spend based on order volume</li>
+                        <li>Strong BW/BEx usage indicating mature analytics capability</li>
+                    </ul>
+                </div>
+
+                <div class="briefing-section">
+                    <h3>💡 Strategic Context:</h3>
+                    <p>Love's is a prime candidate for SAP Datasphere + AI Core modernization. Their Snowflake investment shows commitment to cloud, and ECIF co-funding (25%) makes this highly competitive.</p>
+                </div>
+
+                <div class="briefing-section">
+                    <h3>🎯 Recommended Approach:</h3>
+                    <p>3-phase rollout over 12 months with focus on operational cost reduction (CFO mandate priority).</p>
+                </div>
+
+                <p style="margin-top: 16px;">✅ Ready to generate full assessment with 3 financial scenarios.</p>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="showPhase(2)">Validate & Generate Assessment</button>
+                    <button class="btn btn-secondary">Adjust Assumptions</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phase 2: Generation Progress -->
+        <div id="phase2" class="phase-content">
+            <div class="progress-section">
+                <div class="progress-header">
+                    <div class="progress-title">🔄 Generating Assessment...</div>
+                    <div class="progress-percentage">45%</div>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+
+                <div class="reasoning-panel">
+                    <div class="reasoning-header" onclick="this.parentElement.classList.toggle('collapsed')">
+                        <div class="reasoning-title">🧠 Agent Reasoning</div>
+                        <div class="reasoning-toggle">▼ Collapse</div>
+                    </div>
+
+                    <div class="reasoning-steps">
+                        <div class="reasoning-step">
+                            <div class="reasoning-icon">✅</div>
+                            <div class="reasoning-content">
+                                <div class="reasoning-text">Analyzed customer profile</div>
+                                <div class="reasoning-detail">897 orders detected, $7.6M annual spend estimated</div>
+                            </div>
+                        </div>
+
+                        <div class="reasoning-step">
+                            <div class="reasoning-icon">✅</div>
+                            <div class="reasoning-content">
+                                <div class="reasoning-text">Calculated 3 scenarios</div>
+                                <div class="reasoning-detail">Conservative, Recommended, Aggressive models complete</div>
+                            </div>
+                        </div>
+
+                        <div class="reasoning-step">
+                            <div class="reasoning-icon">✅</div>
+                            <div class="reasoning-content">
+                                <div class="reasoning-text">Detected ECIF eligibility</div>
+                                <div class="reasoning-detail">Snowflake data lake → 25% co-funding available ($950K)</div>
+                            </div>
+                        </div>
+
+                        <div class="reasoning-step">
+                            <div class="reasoning-icon">🔄</div>
+                            <div class="reasoning-content">
+                                <div class="reasoning-text">Generating Section 3: Industry Context</div>
+                                <div class="reasoning-detail">Benchmarking against retail/logistics peers...</div>
+                            </div>
+                        </div>
+
+                        <div class="reasoning-step">
+                            <div class="reasoning-icon">⏳</div>
+                            <div class="reasoning-content">
+                                <div class="reasoning-text">Pending: Section 4-8</div>
+                                <div class="reasoning-detail">Future state, scenarios, financial model, risks, roadmap</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phase 3: Results -->
+        <div id="phase3" class="phase-content">
+            <div class="results-section">
+                <div class="success-header">
+                    <div class="success-icon">✅</div>
+                    <div class="success-title">Assessment Generated Successfully</div>
+                </div>
+
+                <div class="pdf-card">
+                    <div class="pdf-header">
+                        <div>
+                            <div class="pdf-title">📄 Executive Summary</div>
+                            <div class="pdf-pages">11 pages</div>
+                        </div>
+                        <button class="btn btn-primary">Download PDF</button>
+                    </div>
+                    <div class="pdf-preview">
+                        Love's Travel Stops has a compelling opportunity to modernize their data platform with SAP Datasphere and AI Core. With 897 active orders and $7.6M in annual SAP spend, they are well-positioned for a 3-phase transformation...
+                    </div>
+                </div>
+
+                <div class="pdf-card">
+                    <div class="pdf-header">
+                        <div>
+                            <div class="pdf-title">📊 Financial Appendix</div>
+                            <div class="pdf-pages">10 pages</div>
+                        </div>
+                        <button class="btn btn-primary">Download PDF</button>
+                    </div>
+
+                    <div class="scenario-cards">
+                        <div class="scenario-card">
+                            <div class="scenario-label">CONSERVATIVE</div>
+                            <div class="scenario-investment">$2.1M</div>
+                            <div class="scenario-roi">215%</div>
+                            <div class="scenario-payback">23 month payback</div>
+                        </div>
+
+                        <div class="scenario-card recommended">
+                            <div class="scenario-label">✓ RECOMMENDED</div>
+                            <div class="scenario-investment">$3.8M</div>
+                            <div class="scenario-roi">227%</div>
+                            <div class="scenario-payback">18 month payback</div>
+                        </div>
+
+                        <div class="scenario-card">
+                            <div class="scenario-label">AGGRESSIVE</div>
+                            <div class="scenario-investment">$6.2M</div>
+                            <div class="scenario-roi">227%</div>
+                            <div class="scenario-payback">16 month payback</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="refinement-section">
+                    <div class="refinement-title">💬 Need changes? Tell me what to adjust:</div>
+                    <div class="refinement-input">
+                        <input type="text" placeholder='e.g., "Make it more aggressive" or "Add cloud migration details"'>
+                        <button class="btn btn-primary">Refine Assessment</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPhase(num) {
+            // Update buttons
+            document.querySelectorAll('.phase-toggle button').forEach((btn, i) => {
+                btn.classList.toggle('active', i === num - 1);
+            });
+
+            // Update content
+            document.querySelectorAll('.phase-content').forEach((content, i) => {
+                content.classList.toggle('active', i === num - 1);
+            });
+        }
+    </script>
+</body>
+</html>
