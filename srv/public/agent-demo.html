@@ -7,247 +7,6 @@
     <meta name="description" content="Interactive demonstration of AI-powered assessment generation with Claude Sonnet 4.6">
     <link rel="stylesheet" href="/css/app.css">
     <link rel="stylesheet" href="/css/agent-demo.css">
-    <style>
-        /* Extracted inline styles for better maintainability */
-        .exit-demo-link { margin-right: 12px; }
-        .breadcrumb-nav { margin-bottom: 24px; }
-        .breadcrumb-list {
-            display: flex;
-            gap: 8px;
-            list-style: none;
-            padding: 0;
-            font-size: 13px;
-            color: #98989d;
-        }
-        .breadcrumb-link { color: #007aff; text-decoration: none; }
-        .breadcrumb-current { color: #ebebf5; }
-        .progress-label { font-size: 12px; color: #98989d; }
-        .company-header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-        .company-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #007aff, #5856d6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
-        .company-details { flex: 1; }
-        .company-name {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 4px;
-            color: #ffffff;
-        }
-        .company-meta { font-size: 14px; color: #98989d; }
-        .question-label {
-            display: block;
-            margin-bottom: 8px;
-            color: #007aff;
-            font-weight: 700;
-        }
-        .section-heading {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            color: #ffffff;
-        }
-        .summary-grid { display: grid; gap: 20px; }
-        .summary-box {
-            padding: 16px;
-            border-radius: 12px;
-            border: 1px solid;
-        }
-        .summary-box-challenge {
-            background: rgba(0, 122, 255, 0.08);
-            border-color: rgba(0, 122, 255, 0.2);
-        }
-        .summary-box-solution {
-            background: rgba(47, 168, 47, 0.08);
-            border-color: rgba(47, 168, 47, 0.2);
-        }
-        .summary-box-timeline {
-            background: rgba(255, 149, 0, 0.08);
-            border-color: rgba(255, 149, 0, 0.2);
-        }
-        .summary-label {
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-        .summary-label-challenge { color: #007aff; }
-        .summary-label-solution { color: #2fa82f; }
-        .summary-label-timeline { color: #ff9500; }
-        .summary-text {
-            font-size: 15px;
-            line-height: 1.5;
-            color: #ebebf5;
-        }
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-        .metric-box {
-            text-align: center;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-        }
-        .metric-value {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-        .metric-value-primary { color: #007aff; }
-        .metric-value-warning { color: #ff9500; }
-        .metric-value-success { color: #2fa82f; }
-        .metric-label { font-size: 13px; color: #98989d; }
-        .arrow-icon { font-size: 18px; }
-        .generation-header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-        .generation-details { flex: 1; }
-        .generation-title {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 4px;
-            color: #ffffff;
-        }
-        .generation-status { font-size: 14px; color: #98989d; }
-        .pipeline-heading {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: #ffffff;
-        }
-        .pipeline-grid { display: grid; gap: 16px; }
-        .pipeline-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .pipeline-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .pipeline-icon-complete {
-            background: rgba(47, 168, 47, 0.15);
-            border: 2px solid #2fa82f;
-            color: #2fa82f;
-        }
-        .pipeline-icon-processing {
-            background: rgba(0, 122, 255, 0.15);
-            border: 2px solid #007aff;
-        }
-        .pipeline-icon-waiting {
-            background: rgba(255, 255, 255, 0.08);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            color: #98989d;
-        }
-        .pipeline-details { flex: 1; }
-        .pipeline-step-title { font-size: 15px; font-weight: 600; }
-        .pipeline-step-title-active { color: #ffffff; }
-        .pipeline-step-title-waiting { color: #98989d; }
-        .pipeline-step-status { font-size: 13px; }
-        .pipeline-step-status-active { color: #98989d; }
-        .pipeline-step-status-waiting { color: #636366; }
-        .success-header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        .success-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: rgba(47, 168, 47, 0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-        }
-        .success-details { flex: 1; }
-        .success-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 4px;
-            color: #2fa82f;
-        }
-        .success-description { font-size: 15px; color: #ebebf5; }
-        .scenario-grid { display: grid; gap: 20px; margin-top: 24px; }
-        .scenario-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 16px;
-        }
-        .scenario-info { }
-        .scenario-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 4px;
-        }
-        .scenario-label-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 4px;
-        }
-        .scenario-badge {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: #007aff;
-            background: rgba(0, 122, 255, 0.15);
-            padding: 4px 8px;
-            border-radius: 8px;
-        }
-        .scenario-description { font-size: 13px; color: #98989d; }
-        .scenario-metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 16px;
-            padding: 16px;
-            border-radius: 12px;
-        }
-        .scenario-metrics-default {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        .scenario-metrics-recommended {
-            background: rgba(0, 122, 255, 0.08);
-            border: 1px solid rgba(0, 122, 255, 0.2);
-        }
-        .scenario-metric-label {
-            font-size: 13px;
-            margin-bottom: 4px;
-        }
-        .scenario-metric-label-default { color: #98989d; }
-        .scenario-metric-label-recommended { color: #007aff; }
-        .scenario-metric-value {
-            font-size: 24px;
-            font-weight: 700;
-        }
-        .scenario-metric-value-neutral { color: #ffffff; }
-        .scenario-metric-value-success { color: #2fa82f; }
-        .scenario-metric-value-primary { color: #007aff; }
-        .next-actions { margin-top: 32px; }
-        .recommended-border { border: 2px solid #007aff; }
-    </style>
 </head>
 <body class="agent-demo-page">
     <div class="app-container">
@@ -258,7 +17,7 @@
                 <span class="top-bar-title">BDC Assessment Generator</span>
             </div>
             <div class="top-bar-actions">
-                <a href="/wizard.html" class="agent-btn agent-btn-ghost agent-btn-sm exit-demo-link">Exit Demo</a>
+                <a href="/wizard.html" class="agent-btn agent-btn-ghost agent-btn-sm">Exit Demo</a>
                 <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
                     <span id="themeIcon">🌙</span>
                     <span id="themeLabel">Dark</span>
@@ -268,431 +27,332 @@
 
         <!-- Breadcrumb Navigation -->
         <div class="agent-demo-container">
-            <nav aria-label="Breadcrumb" class="breadcrumb-nav">
-                <ol class="breadcrumb-list">
-                    <li><a href="/wizard.html" class="breadcrumb-link">Home</a></li>
+            <nav aria-label="Breadcrumb" style="margin-bottom: 24px;">
+                <ol style="display: flex; gap: 8px; list-style: none; padding: 0; font-size: 13px; color: #98989d;">
+                    <li><a href="/wizard.html" style="color: #007aff; text-decoration: none;">Home</a></li>
                     <li aria-hidden="true">/</li>
-                    <li aria-current="page" class="breadcrumb-current">AI Agent Demo</li>
+                    <li aria-current="page" style="color: #ebebf5;">AI Agent Demo</li>
                 </ol>
             </nav>
 
             <!-- Progress Indicator (4 Steps) -->
-            <div class="agent-progress" role="progressbar" aria-label="Demo progress" aria-valuenow="1" aria-valuemin="1" aria-valuemax="4" data-current-phase="discovery">
-                <div class="agent-progress-step">
-                    <div class="agent-progress-dot active" data-step="discovery" aria-label="Discovery phase"></div>
+            <div class="progress-bar-container" role="progressbar" aria-label="Demo progress" aria-valuenow="1" aria-valuemin="1" aria-valuemax="4">
+                <div class="progress-step">
+                    <div class="progress-dot progress-dot-active" data-phase="1"></div>
                     <span class="progress-label">Discovery</span>
                 </div>
-                <div class="agent-progress-connector" data-connector="1"></div>
-                <div class="agent-progress-step">
-                    <div class="agent-progress-dot" data-step="briefing" aria-label="Briefing phase"></div>
+                <div class="progress-connector"></div>
+                <div class="progress-step">
+                    <div class="progress-dot" data-phase="2"></div>
                     <span class="progress-label">Briefing</span>
                 </div>
-                <div class="agent-progress-connector" data-connector="2"></div>
-                <div class="agent-progress-step">
-                    <div class="agent-progress-dot" data-step="generation" aria-label="Generation phase"></div>
+                <div class="progress-connector"></div>
+                <div class="progress-step">
+                    <div class="progress-dot" data-phase="3"></div>
                     <span class="progress-label">Generation</span>
                 </div>
-                <div class="agent-progress-connector" data-connector="3"></div>
-                <div class="agent-progress-step">
-                    <div class="agent-progress-dot" data-step="results" aria-label="Results phase"></div>
+                <div class="progress-connector"></div>
+                <div class="progress-step">
+                    <div class="progress-dot" data-phase="4"></div>
                     <span class="progress-label">Results</span>
                 </div>
             </div>
 
-            <!-- Phase 1: Discovery -->
-            <div id="discovery-phase" class="agent-phase-container">
-                <div class="agent-phase-header">
-                    <div class="agent-phase-badge">Phase 1</div>
-                    <h1 class="agent-phase-title">Discovery Interview</h1>
-                    <p class="agent-phase-subtitle">Claude asks targeted questions to understand your customer's business context and investment priorities</p>
+            <!-- Phase 1: Discovery - 4 Source Cards -->
+            <div id="phase1" class="phase-container">
+                <div class="phase-header">
+                    <div class="phase-badge">Phase 1</div>
+                    <h1 class="phase-title">Intelligence Discovery</h1>
+                    <p class="phase-subtitle">AI agents fetch real customer data and competitive intelligence</p>
                 </div>
 
-                <!-- Customer Context -->
-                <div class="agent-content-card agent-animate-fade-in-up">
-                    <div class="company-header">
-                        <div class="company-icon">🏢</div>
-                        <div class="company-details">
-                            <h2 class="company-name">Love's Travel Stops</h2>
-                            <p class="company-meta">897 orders/month • Snowflake data warehouse</p>
-                        </div>
-                        <div class="agent-status-badge processing">
-                            <div class="agent-status-indicator"></div>
-                            <span>Interviewing (Active)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Interview Questions -->
-                <div class="agent-chat-container agent-stagger" id="discovery-questions">
-                    <!-- Q1 -->
-                    <div class="agent-chat-bubble assistant agent-animate-fade-in-up">
-                        <div class="agent-chat-avatar">AI</div>
-                        <div class="agent-chat-message">
-                            <strong class="question-label">Question 1 of 5</strong>
-                            What's the primary business challenge you're trying to solve?
-                        </div>
-                    </div>
-                    <div class="agent-chat-bubble user agent-animate-fade-in-up">
-                        <div class="agent-chat-avatar">👤</div>
-                        <div class="agent-chat-message">
-                            High order processing costs and frequent data errors requiring manual corrections
+                <div class="source-grid">
+                    <!-- CRM Source -->
+                    <div id="source-crm" class="source-card" style="display: none;">
+                        <div class="source-icon">📊</div>
+                        <div class="source-details">
+                            <div class="source-title">CRM Data</div>
+                            <div class="source-detail">Fetching customer profile...</div>
+                            <div class="source-status">Waiting...</div>
                         </div>
                     </div>
 
-                    <!-- Q2 -->
-                    <div class="agent-chat-bubble assistant agent-animate-fade-in-up">
-                        <div class="agent-chat-avatar">AI</div>
-                        <div class="agent-chat-message">
-                            <strong class="question-label">Question 2 of 5</strong>
-                            What's your current order volume and what percentage have data quality issues?
-                        </div>
-                    </div>
-                    <div class="agent-chat-bubble user agent-animate-fade-in-up">
-                        <div class="agent-chat-avatar">👤</div>
-                        <div class="agent-chat-message">
-                            897 orders per month with approximately 23% requiring manual intervention
+                    <!-- Gartner Source -->
+                    <div id="source-gartner" class="source-card" style="display: none;">
+                        <div class="source-icon">📈</div>
+                        <div class="source-details">
+                            <div class="source-title">Gartner Benchmarks</div>
+                            <div class="source-detail">Fetching industry data...</div>
+                            <div class="source-status">Waiting...</div>
                         </div>
                     </div>
 
-                    <!-- Q3 -->
-                    <div class="agent-chat-bubble assistant agent-animate-fade-in-up">
-                        <div class="agent-chat-avatar">AI</div>
-                        <div class="agent-chat-message">
-                            <strong class="question-label">Question 3 of 5</strong>
-                            What are the estimated costs of these manual corrections (time, labor, delays)?
-                        </div>
-                    </div>
-                    <div class="agent-chat-bubble user agent-animate-fade-in-up">
-                        <div class="agent-chat-avatar">👤</div>
-                        <div class="agent-chat-message">
-                            Each correction takes 45 minutes on average, costs approximately $65 per correction in labor and delay costs
+                    <!-- Benchmarks Source -->
+                    <div id="source-benchmarks" class="source-card" style="display: none;">
+                        <div class="source-icon">⚙️</div>
+                        <div class="source-details">
+                            <div class="source-title">SAP Benchmarks</div>
+                            <div class="source-detail">Fetching transformation data...</div>
+                            <div class="source-status">Waiting...</div>
                         </div>
                     </div>
 
-                    <!-- Q4 -->
-                    <div class="agent-chat-bubble assistant agent-animate-fade-in-up">
-                        <div class="agent-chat-avatar">AI</div>
-                        <div class="agent-chat-message">
-                            <strong class="question-label">Question 4 of 5</strong>
-                            What's your current data architecture and which SAP solutions are you considering?
+                    <!-- Case Studies Source -->
+                    <div id="source-cases" class="source-card" style="display: none;">
+                        <div class="source-icon">📁</div>
+                        <div class="source-details">
+                            <div class="source-title">Similar Case Studies</div>
+                            <div class="source-detail">Matching customer profiles...</div>
+                            <div class="source-status">Waiting...</div>
                         </div>
                     </div>
-                    <div class="agent-chat-bubble user agent-animate-fade-in-up">
-                        <div class="agent-chat-avatar">👤</div>
-                        <div class="agent-chat-message">
-                            Snowflake data warehouse, considering SAP Datasphere for unified data management and SAC for analytics
-                        </div>
-                    </div>
-
-                    <!-- Q5 -->
-                    <div class="agent-chat-bubble assistant agent-animate-fade-in-up">
-                        <div class="agent-chat-avatar">AI</div>
-                        <div class="agent-chat-message">
-                            <strong class="question-label">Question 5 of 5</strong>
-                            What's your expected timeline and budget range for this initiative?
-                        </div>
-                    </div>
-                    <div class="agent-chat-bubble user agent-animate-fade-in-up">
-                        <div class="agent-chat-avatar">👤</div>
-                        <div class="agent-chat-message">
-                            Need solution operational within 6 months, flexible on budget but looking for strong ROI within 18-24 months
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Continue Button -->
-                <div class="agent-action-group">
-                    <button class="agent-btn agent-btn-primary agent-btn-lg" onclick="advancePhase('briefing')">
-                        Continue to Briefing
-                        <span class="arrow-icon">→</span>
-                    </button>
                 </div>
             </div>
 
-            <!-- Phase 2: Briefing (Initially Hidden) -->
-            <div id="briefing-phase" class="agent-phase-container" style="display: none;">
-                <div class="agent-phase-header">
-                    <div class="agent-phase-badge">Phase 2</div>
-                    <h1 class="agent-phase-title">Strategy Briefing</h1>
-                    <p class="agent-phase-subtitle">AI synthesizes interview responses into a structured business case</p>
+            <!-- Phase 2: Briefing -->
+            <div id="phase2" class="phase-container" style="display: none;">
+                <div class="phase-header">
+                    <div class="phase-badge">Phase 2</div>
+                    <h1 class="phase-title">Strategic Briefing</h1>
+                    <p class="phase-subtitle">AI synthesizes intelligence into a structured business case</p>
                 </div>
 
                 <!-- Executive Summary -->
-                <div class="agent-content-card agent-content-card-elevated agent-animate-fade-in-up">
+                <div class="briefing-section">
                     <h2 class="section-heading">Executive Summary</h2>
                     <div class="summary-grid">
                         <div class="summary-box summary-box-challenge">
-                            <div class="summary-label summary-label-challenge">Business Challenge</div>
-                            <div class="summary-text">High order processing costs and data quality issues requiring manual corrections (23% of 897 monthly orders)</div>
+                            <div class="summary-label">Business Challenge</div>
+                            <div class="summary-text" id="briefing-challenge">Analyzing customer data...</div>
                         </div>
                         <div class="summary-box summary-box-solution">
-                            <div class="summary-label summary-label-solution">Proposed Solution</div>
-                            <div class="summary-text">SAP Datasphere + SAC integration with Snowflake for unified data management and real-time analytics</div>
+                            <div class="summary-label">Proposed Solution</div>
+                            <div class="summary-text" id="briefing-solution">Generating recommendations...</div>
                         </div>
                         <div class="summary-box summary-box-timeline">
-                            <div class="summary-label summary-label-timeline">Timeline & Budget</div>
-                            <div class="summary-text">6-month implementation with ROI target of 18-24 months</div>
+                            <div class="summary-label">Timeline & Funding</div>
+                            <div class="summary-text" id="briefing-timeline">Calculating timelines...</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Financial Impact -->
-                <div class="agent-content-card agent-animate-fade-in-up" style="animation-delay: 100ms;">
-                    <h2 class="section-heading">Quantified Impact</h2>
-                    <div class="metrics-grid">
-                        <div class="metric-box">
-                            <div class="metric-value metric-value-primary">206</div>
-                            <div class="metric-label">Orders Requiring Correction</div>
-                        </div>
-                        <div class="metric-box">
-                            <div class="metric-value metric-value-warning">$13,390</div>
-                            <div class="metric-label">Monthly Correction Cost</div>
-                        </div>
-                        <div class="metric-box">
-                            <div class="metric-value metric-value-success">$160.7K</div>
-                            <div class="metric-label">Annual Cost of Issues</div>
-                        </div>
+                <!-- Sources Referenced -->
+                <div id="sources-referenced" class="briefing-section" style="display: none;">
+                    <h3 class="section-subheading">Intelligence Sources</h3>
+                    <div class="sources-list">
+                        <span class="source-pill">📊 CRM Profile</span>
+                        <span class="source-pill">📈 Gartner Benchmarks</span>
+                        <span class="source-pill">⚙️ SAP Transformation Data</span>
+                        <span class="source-pill">📁 Case Studies (3)</span>
                     </div>
                 </div>
 
-                <!-- Action Buttons -->
-                <div class="agent-action-group">
-                    <button class="agent-btn agent-btn-ghost" onclick="advancePhase('discovery')">
-                        <span class="arrow-icon">←</span>
-                        Back to Discovery
-                    </button>
-                    <button class="agent-btn agent-btn-primary agent-btn-lg" onclick="advancePhase('generation')">
+                <!-- AI Reasoning -->
+                <div id="reasoning-section" class="briefing-section" style="display: none;">
+                    <h3 class="section-subheading">AI Reasoning Trail</h3>
+                    <div class="reasoning-box">
+                        <div class="reasoning-step">✓ Identified high-volume order processing challenge</div>
+                        <div class="reasoning-step">✓ Matched with industry benchmarks for error rates</div>
+                        <div class="reasoning-step">✓ Calculated financial impact based on CRM metrics</div>
+                        <div class="reasoning-step">✓ Recommended Datasphere + SAC based on similar cases</div>
+                        <div class="reasoning-step">✓ Validated ECIF eligibility for co-funding</div>
+                    </div>
+                </div>
+
+                <div class="action-group">
+                    <button class="agent-btn agent-btn-primary agent-btn-lg" onclick="goToPhase(3)">
                         Generate Financial Scenarios
                         <span class="arrow-icon">→</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Phase 3: Generation (Initially Hidden) -->
-            <div id="generation-phase" class="agent-phase-container" style="display: none;">
-                <div class="agent-phase-header">
-                    <div class="agent-phase-badge">Phase 3</div>
-                    <h1 class="agent-phase-title">Scenario Generation</h1>
-                    <p class="agent-phase-subtitle">Claude analyzes briefing data and generates 3 financial scenarios</p>
+            <!-- Phase 3: Generation - 3 Agent Cards + Narrative -->
+            <div id="phase3" class="phase-container" style="display: none;">
+                <div class="phase-header">
+                    <div class="phase-badge">Phase 3</div>
+                    <h1 class="phase-title">AI Generation Pipeline</h1>
+                    <p class="phase-subtitle">Three specialized agents collaborate to generate scenarios</p>
                 </div>
 
-                <!-- Generation Status -->
-                <div class="agent-content-card agent-animate-fade-in-up">
-                    <div class="generation-header">
-                        <div class="agent-spinner agent-spinner-lg"></div>
-                        <div class="generation-details">
-                            <h2 class="generation-title">Generating Scenarios</h2>
-                            <p class="generation-status">Claude Sonnet 4.6 processing briefing data...</p>
-                        </div>
-                        <div class="agent-status-badge processing">
-                            <div class="agent-status-indicator"></div>
-                            <span>Active (Processing)</span>
+                <!-- Agent Cards -->
+                <div class="agent-grid">
+                    <!-- Financial Model Agent -->
+                    <div id="agent-financial" class="agent-card">
+                        <div class="agent-icon" style="background: #007aff;">💰</div>
+                        <div class="agent-details">
+                            <div class="agent-title">Financial Model Agent</div>
+                            <div class="agent-status">Waiting to start...</div>
+                            <div class="agent-progress-bar">
+                                <div class="agent-progress-fill" style="width: 0%;"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Sub-Phase Progress -->
-                <div class="agent-content-card agent-animate-fade-in-up" style="animation-delay: 100ms;">
-                    <h3 class="pipeline-heading">Generation Pipeline</h3>
-                    <div class="pipeline-grid">
-                        <!-- Step 1: Analysis -->
-                        <div class="pipeline-row" data-phase-id="analysis">
-                            <div class="pipeline-icon pipeline-icon-complete phase-icon">✓</div>
-                            <div class="pipeline-details">
-                                <div class="pipeline-step-title pipeline-step-title-active">Customer Data Analysis</div>
-                                <div class="pipeline-step-status pipeline-step-status-active">Completed in 1.2s</div>
-                            </div>
-                            <div class="agent-status-badge completed">
-                                <div class="agent-status-indicator"></div>
-                                <span>Done (Complete)</span>
+                    <!-- ECIF Calculator Agent -->
+                    <div id="agent-ecif" class="agent-card">
+                        <div class="agent-icon" style="background: #2fa82f;">🎯</div>
+                        <div class="agent-details">
+                            <div class="agent-title">ECIF Calculator Agent</div>
+                            <div class="agent-status">Waiting to start...</div>
+                            <div class="agent-progress-bar">
+                                <div class="agent-progress-fill" style="width: 0%;"></div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Step 2: Financial -->
-                        <div class="pipeline-row" data-phase-id="financial-model">
-                            <div class="pipeline-icon pipeline-icon-processing phase-icon">
-                                <div class="agent-spinner" style="width: 14px; height: 14px; border-width: 2px;"></div>
-                            </div>
-                            <div class="pipeline-details">
-                                <div class="pipeline-step-title pipeline-step-title-active">Financial Model Construction</div>
-                                <div class="pipeline-step-status pipeline-step-status-active">Processing investment tiers...</div>
-                            </div>
-                            <div class="agent-status-badge processing">
-                                <div class="agent-status-indicator"></div>
-                                <span>Running (Active)</span>
-                            </div>
-                        </div>
-
-                        <!-- Step 3: Scenarios -->
-                        <div class="pipeline-row" data-phase-id="roi-calculator">
-                            <div class="pipeline-icon pipeline-icon-waiting phase-icon">3</div>
-                            <div class="pipeline-details">
-                                <div class="pipeline-step-title pipeline-step-title-waiting">ROI & Payback Calculation</div>
-                                <div class="pipeline-step-status pipeline-step-status-waiting">Waiting for financial model...</div>
-                            </div>
-                            <div class="agent-status-badge waiting">
-                                <div class="agent-status-indicator"></div>
-                                <span>Queued (Waiting)</span>
-                            </div>
-                        </div>
-
-                        <!-- Step 4: Narrative -->
-                        <div class="pipeline-row" data-phase-id="narrative">
-                            <div class="pipeline-icon pipeline-icon-waiting phase-icon">4</div>
-                            <div class="pipeline-details">
-                                <div class="pipeline-step-title pipeline-step-title-waiting">AI Narrative Generation</div>
-                                <div class="pipeline-step-status pipeline-step-status-waiting">Waiting for scenarios...</div>
-                            </div>
-                            <div class="agent-status-badge waiting">
-                                <div class="agent-status-indicator"></div>
-                                <span>Queued (Waiting)</span>
+                    <!-- Narrative Generator Agent -->
+                    <div id="agent-narrative" class="agent-card">
+                        <div class="agent-icon" style="background: #5856d6;">📝</div>
+                        <div class="agent-details">
+                            <div class="agent-title">Narrative Generator Agent</div>
+                            <div class="agent-status">Waiting to start...</div>
+                            <div class="agent-progress-bar">
+                                <div class="agent-progress-fill" style="width: 0%;"></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Action Buttons -->
-                <div class="agent-action-group">
-                    <button class="agent-btn agent-btn-ghost" onclick="advancePhase('briefing')">
-                        <span class="arrow-icon">←</span>
-                        Back to Briefing
-                    </button>
-                    <button class="agent-btn agent-btn-primary agent-btn-lg" data-action="continue-results" onclick="advancePhase('results')" style="display: none;">
-                        View Results
-                        <span class="arrow-icon">→</span>
-                    </button>
+                <!-- Live Narrative Stream -->
+                <div class="narrative-container">
+                    <h3 class="section-subheading">Live AI Narrative</h3>
+                    <div id="narrative-stream" class="narrative-stream">
+                        Waiting for agents to begin generation...
+                    </div>
                 </div>
             </div>
 
-            <!-- Phase 4: Results (Initially Hidden) -->
-            <div id="results-phase" class="agent-phase-container" style="display: none;">
-                <div class="agent-phase-header">
-                    <div class="agent-phase-badge">Phase 4</div>
-                    <h1 class="agent-phase-title">Scenarios Ready</h1>
-                    <p class="agent-phase-subtitle">3 financial scenarios generated with interactive sliders and exportable PDFs</p>
+            <!-- Phase 4: Results - ECIF + 3 Scenarios + PDFs -->
+            <div id="phase4" class="phase-container" style="display: none;">
+                <div class="phase-header">
+                    <div class="phase-badge">Phase 4</div>
+                    <h1 class="phase-title">Financial Scenarios</h1>
+                    <p class="phase-subtitle">Interactive dashboards and executive PDFs ready for customer delivery</p>
                 </div>
 
-                <!-- Success Message -->
-                <div class="agent-content-card agent-content-card-elevated agent-animate-scale-in results-success-message" style="display: none;">
-                    <div class="success-header">
-                        <div class="success-icon">✓</div>
-                        <div class="success-details">
-                            <h2 class="success-title">Scenarios Generated Successfully</h2>
-                            <p class="success-description">3 investment scenarios for Love's Travel Stops ready for review and export</p>
-                        </div>
-                        <div class="agent-status-badge completed">
-                            <div class="agent-status-indicator"></div>
-                            <span>Complete (Done)</span>
-                        </div>
+                <!-- ECIF Co-Funding Banner -->
+                <div class="ecif-banner">
+                    <div class="ecif-icon">💼</div>
+                    <div class="ecif-details">
+                        <div class="ecif-label">Eligible for SAP ECIF Co-Funding</div>
+                        <div class="ecif-amount" id="ecif-amount">Calculating...</div>
                     </div>
+                    <div class="ecif-badge">✓ Qualified</div>
                 </div>
 
                 <!-- Scenario Cards -->
                 <div class="scenario-grid">
-                    <!-- Conservative -->
-                    <div class="agent-content-card agent-animate-fade-in-up" data-scenario="conservative" style="display: none;">
+                    <!-- Conservative Scenario -->
+                    <div id="scenario-conservative" class="scenario-card" style="display: none;">
                         <div class="scenario-header">
-                            <div class="scenario-info">
-                                <h3 class="scenario-title">Conservative Scenario</h3>
-                                <p class="scenario-description">Datasphere only • 45% error reduction</p>
-                            </div>
-                            <button class="agent-btn agent-btn-secondary agent-btn-sm" onclick="window.open('/dashboard.html?demo=conservative', '_blank')">Open Conservative Dashboard</button>
+                            <div class="scenario-title">Conservative</div>
+                            <div class="scenario-description">Datasphere only • 45% error reduction</div>
                         </div>
-                        <div class="scenario-metrics-grid scenario-metrics-default">
-                            <div>
-                                <div class="scenario-metric-label scenario-metric-label-default">3-Year Return</div>
-                                <div class="scenario-metric-value scenario-metric-value-neutral">$2.08M</div>
+                        <div class="scenario-metrics">
+                            <div class="scenario-metric">
+                                <div class="metric-label">Investment</div>
+                                <div class="metric-value scenario-investment">$1.20M</div>
                             </div>
-                            <div>
-                                <div class="scenario-metric-label scenario-metric-label-default">ROI</div>
-                                <div class="scenario-metric-value scenario-metric-value-success">215%</div>
+                            <div class="scenario-metric">
+                                <div class="metric-label">3-Year Return</div>
+                                <div class="metric-value scenario-return">$2.08M</div>
                             </div>
-                            <div>
-                                <div class="scenario-metric-label scenario-metric-label-default">Payback</div>
-                                <div class="scenario-metric-value scenario-metric-value-primary">23 mo</div>
+                            <div class="scenario-metric">
+                                <div class="metric-label">ROI</div>
+                                <div class="metric-value scenario-roi">215%</div>
+                            </div>
+                            <div class="scenario-metric">
+                                <div class="metric-label">Payback</div>
+                                <div class="metric-value scenario-payback">23 mo</div>
                             </div>
                         </div>
+                        <button class="agent-btn agent-btn-secondary" onclick="window.open('/dashboard.html?demo=conservative', '_blank')">
+                            Open Dashboard →
+                        </button>
                     </div>
 
-                    <!-- Recommended -->
-                    <div class="agent-content-card agent-animate-fade-in-up recommended-border" data-scenario="recommended" style="animation-delay: 100ms; display: none;">
+                    <!-- Recommended Scenario -->
+                    <div id="scenario-recommended" class="scenario-card scenario-card-recommended" style="display: none;">
+                        <div class="scenario-badge">BEST VALUE</div>
                         <div class="scenario-header">
-                            <div class="scenario-info">
-                                <div class="scenario-label-row">
-                                    <h3 class="scenario-title">Recommended Scenario</h3>
-                                    <span class="scenario-badge">BEST VALUE</span>
-                                </div>
-                                <p class="scenario-description">Datasphere + SAC • 70% error reduction</p>
-                            </div>
-                            <button class="agent-btn agent-btn-primary agent-btn-sm" onclick="window.open('/dashboard.html?demo=recommended', '_blank')">Open Recommended Dashboard</button>
+                            <div class="scenario-title">Recommended</div>
+                            <div class="scenario-description">Datasphere + SAC • 70% error reduction</div>
                         </div>
-                        <div class="scenario-metrics-grid scenario-metrics-recommended">
-                            <div>
-                                <div class="scenario-metric-label scenario-metric-label-recommended">3-Year Return</div>
-                                <div class="scenario-metric-value scenario-metric-value-neutral">$3.79M</div>
+                        <div class="scenario-metrics">
+                            <div class="scenario-metric">
+                                <div class="metric-label">Investment</div>
+                                <div class="metric-value scenario-investment">$1.67M</div>
                             </div>
-                            <div>
-                                <div class="scenario-metric-label scenario-metric-label-recommended">ROI</div>
-                                <div class="scenario-metric-value scenario-metric-value-success">227%</div>
+                            <div class="scenario-metric">
+                                <div class="metric-label">3-Year Return</div>
+                                <div class="metric-value scenario-return">$3.79M</div>
                             </div>
-                            <div>
-                                <div class="scenario-metric-label scenario-metric-label-recommended">Payback</div>
-                                <div class="scenario-metric-value scenario-metric-value-primary">18 mo</div>
+                            <div class="scenario-metric">
+                                <div class="metric-label">ROI</div>
+                                <div class="metric-value scenario-roi">227%</div>
+                            </div>
+                            <div class="scenario-metric">
+                                <div class="metric-label">Payback</div>
+                                <div class="metric-value scenario-payback">18 mo</div>
                             </div>
                         </div>
+                        <button class="agent-btn agent-btn-primary" onclick="window.open('/dashboard.html?demo=recommended', '_blank')">
+                            Open Dashboard →
+                        </button>
                     </div>
 
-                    <!-- Aggressive -->
-                    <div class="agent-content-card agent-animate-fade-in-up" data-scenario="aggressive" style="animation-delay: 200ms; display: none;">
+                    <!-- Aggressive Scenario -->
+                    <div id="scenario-aggressive" class="scenario-card" style="display: none;">
                         <div class="scenario-header">
-                            <div class="scenario-info">
-                                <h3 class="scenario-title">Aggressive Scenario</h3>
-                                <p class="scenario-description">Full analytics stack + AI • 85% error reduction</p>
-                            </div>
-                            <button class="agent-btn agent-btn-secondary agent-btn-sm" onclick="window.open('/dashboard.html?demo=aggressive', '_blank')">Open Aggressive Dashboard</button>
+                            <div class="scenario-title">Aggressive</div>
+                            <div class="scenario-description">Full analytics stack + AI • 85% error reduction</div>
                         </div>
-                        <div class="scenario-metrics-grid scenario-metrics-default">
-                            <div>
-                                <div class="scenario-metric-label scenario-metric-label-default">3-Year Return</div>
-                                <div class="scenario-metric-value scenario-metric-value-neutral">$6.25M</div>
+                        <div class="scenario-metrics">
+                            <div class="scenario-metric">
+                                <div class="metric-label">Investment</div>
+                                <div class="metric-value scenario-investment">$2.79M</div>
                             </div>
-                            <div>
-                                <div class="scenario-metric-label scenario-metric-label-default">ROI</div>
-                                <div class="scenario-metric-value scenario-metric-value-success">227%</div>
+                            <div class="scenario-metric">
+                                <div class="metric-label">3-Year Return</div>
+                                <div class="metric-value scenario-return">$6.25M</div>
                             </div>
-                            <div>
-                                <div class="scenario-metric-label scenario-metric-label-default">Payback</div>
-                                <div class="scenario-metric-value scenario-metric-value-primary">16 mo</div>
+                            <div class="scenario-metric">
+                                <div class="metric-label">ROI</div>
+                                <div class="metric-value scenario-roi">227%</div>
+                            </div>
+                            <div class="scenario-metric">
+                                <div class="metric-label">Payback</div>
+                                <div class="metric-value scenario-payback">16 mo</div>
                             </div>
                         </div>
+                        <button class="agent-btn agent-btn-secondary" onclick="window.open('/dashboard.html?demo=aggressive', '_blank')">
+                            Open Dashboard →
+                        </button>
                     </div>
                 </div>
 
                 <!-- PDF Downloads -->
-                <div class="results-pdf-downloads" style="display: none;">
-                    <h3>Download Reports</h3>
+                <div class="pdf-downloads">
+                    <h3 class="section-subheading">Executive Reports</h3>
                     <div class="pdf-grid">
-                        <button class="agent-btn agent-btn-secondary" data-download-pdf="/downloads/loves-executive-summary.pdf">
-                            📄 Executive Summary
+                        <button class="agent-btn agent-btn-secondary" onclick="window.open('/api/pdf/executive-summary?customer=loves', '_blank')">
+                            📄 Executive Summary (PDF)
                         </button>
-                        <button class="agent-btn agent-btn-secondary" data-download-pdf="/downloads/loves-financial-appendix.pdf">
-                            📄 Financial Appendix
+                        <button class="agent-btn agent-btn-secondary" onclick="window.open('/api/pdf/financial-appendix?customer=loves', '_blank')">
+                            📊 Financial Appendix (PDF)
                         </button>
                     </div>
                 </div>
 
                 <!-- Next Actions -->
-                <div class="agent-action-group next-actions results-actions" style="display: none;">
-                    <button class="agent-btn agent-btn-ghost" onclick="advancePhase('discovery')">
+                <div class="action-group">
+                    <button class="agent-btn agent-btn-ghost" onclick="restartDemo()">
                         <span class="arrow-icon">↺</span>
                         Restart Demo
                     </button>
                     <button class="agent-btn agent-btn-secondary" onclick="window.location.href='/wizard.html'">
                         Try Real Version
-                    </button>
-                    <button class="agent-btn agent-btn-primary" onclick="window.open('/dashboard.html?demo=recommended', '_blank')">
-                        Open Recommended Dashboard
-                        <span class="arrow-icon">→</span>
                     </button>
                 </div>
             </div>
@@ -721,29 +381,6 @@
             </div>
         </footer>
     </div>
-
-    <!-- Demo Data -->
-    <script type="application/json" id="demo-data">
-    {
-        "customer": {
-            "name": "Love's Travel Stops",
-            "orders": 897,
-            "dataSource": "Snowflake"
-        },
-        "questions": [
-            {"id": 1, "question": "What's the primary business challenge?", "answer": "High order processing costs and data errors"},
-            {"id": 2, "question": "Order volume and error rate?", "answer": "897 orders/month, 23% errors"},
-            {"id": 3, "question": "Cost per correction?", "answer": "$65/correction, 45min average"},
-            {"id": 4, "question": "Current architecture?", "answer": "Snowflake warehouse, considering Datasphere + SAC"},
-            {"id": 5, "question": "Timeline and budget?", "answer": "6 months, ROI in 18-24 months"}
-        ],
-        "scenarios": [
-            {"id": "conservative", "name": "Conservative", "investment": 1200000, "roi": 215, "payback": 23, "return": 2080000},
-            {"id": "recommended", "name": "Recommended", "investment": 1670000, "roi": 227, "payback": 18, "return": 3790000},
-            {"id": "aggressive", "name": "Aggressive", "investment": 2790000, "roi": 227, "payback": 16, "return": 6250000}
-        ]
-    }
-    </script>
 
     <!-- Agent Demo JavaScript -->
     <script src="/js/agent-demo.js"></script>
