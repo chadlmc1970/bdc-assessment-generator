@@ -111,47 +111,80 @@ async function loadCustomers() {
         const res = await fetch('/api/customers');
         const data = await res.json();
         allCustomers = data.customers || [];
+        console.log(`✅ Loaded ${allCustomers.length} customers`);
     } catch (e) {
-        console.error('Failed to load customers:', e);
+        console.error('❌ Failed to load customers:', e);
+        alert('Failed to load customers. Please refresh the page.');
     }
 }
 
-loadCustomers();
+function initSearch() {
+    console.log('🚀 initSearch called');
+    console.log('📊 Document readyState:', document.readyState);
 
-const searchInput = document.getElementById('searchInput');
-const searchDropdown = document.getElementById('searchDropdown');
+    loadCustomers();
 
-searchInput.addEventListener('input', () => {
-    searchSelectedIndex = -1;
-    renderSearchResults(searchInput.value.trim());
-});
+    const searchInput = document.getElementById('searchInput');
+    const searchDropdown = document.getElementById('searchDropdown');
 
-searchInput.addEventListener('keydown', (e) => {
-    const items = searchDropdown.querySelectorAll('.search-item');
-    if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        searchSelectedIndex = Math.min(searchSelectedIndex + 1, items.length - 1);
-        highlightSearchItem(items);
-    } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        searchSelectedIndex = Math.max(searchSelectedIndex - 1, -1);
-        highlightSearchItem(items);
-    } else if (e.key === 'Enter') {
-        e.preventDefault();
-        if (searchSelectedIndex >= 0 && items[searchSelectedIndex]) {
-            const name = items[searchSelectedIndex].dataset.name;
-            selectCustomer(name);
+    console.log('🔍 searchInput element:', searchInput);
+    console.log('🔍 searchDropdown element:', searchDropdown);
+
+    if (!searchInput || !searchDropdown) {
+        console.error('❌ Search elements not found!');
+        console.error('❌ searchInput:', searchInput);
+        console.error('❌ searchDropdown:', searchDropdown);
+        return;
+    }
+
+    console.log('📝 Attaching input event listener...');
+    searchInput.addEventListener('input', (e) => {
+        console.log('🎯 INPUT EVENT FIRED! Value:', e.target.value);
+        searchSelectedIndex = -1;
+        renderSearchResults(searchInput.value.trim());
+    });
+    console.log('✅ Input listener attached');
+
+    console.log('📝 Attaching keydown event listener...');
+    searchInput.addEventListener('keydown', (e) => {
+        console.log('⌨️ KEYDOWN EVENT FIRED! Key:', e.key);
+        const items = searchDropdown.querySelectorAll('.search-item');
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            searchSelectedIndex = Math.min(searchSelectedIndex + 1, items.length - 1);
+            highlightSearchItem(items);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            searchSelectedIndex = Math.max(searchSelectedIndex - 1, -1);
+            highlightSearchItem(items);
+        } else if (e.key === 'Enter') {
+            e.preventDefault();
+            if (searchSelectedIndex >= 0 && items[searchSelectedIndex]) {
+                const name = items[searchSelectedIndex].dataset.name;
+                selectCustomer(name);
+            }
+        } else if (e.key === 'Escape') {
+            searchDropdown.classList.remove('show');
         }
-    } else if (e.key === 'Escape') {
-        searchDropdown.classList.remove('show');
-    }
-});
+    });
+    console.log('✅ Keydown listener attached');
 
-document.addEventListener('click', (e) => {
-    if (!searchDropdown.contains(e.target) && e.target !== searchInput) {
-        searchDropdown.classList.remove('show');
-    }
-});
+    document.addEventListener('click', (e) => {
+        if (!searchDropdown.contains(e.target) && e.target !== searchInput) {
+            searchDropdown.classList.remove('show');
+        }
+    });
+
+    console.log('✅ Search initialized successfully');
+    console.log('🧪 Test: Try typing in the search input now...');
+}
+
+// Wait for DOM to be ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSearch);
+} else {
+    initSearch();
+}
 
 function highlightSearchItem(items) {
     items.forEach((item, i) => {
@@ -160,7 +193,11 @@ function highlightSearchItem(items) {
 }
 
 function renderSearchResults(query) {
-    if (!query || query.length < 2) {
+    const searchDropdown = document.getElementById('searchDropdown');
+
+    console.log('🔍 Search:', query, '| Customers:', allCustomers.length);
+
+    if (!query || query.length < 1) {
         searchDropdown.classList.remove('show');
         return;
     }
@@ -168,13 +205,30 @@ function renderSearchResults(query) {
     const q = query.toLowerCase();
     const matches = allCustomers.filter(c => {
         const name = c.name.toLowerCase();
+
+        // Exact substring match
         if (name.includes(q)) return true;
-        // fuzzy
+
+        // Fuzzy match - characters in order
         let qi = 0;
         for (let i = 0; i < name.length && qi < q.length; i++) {
             if (name[i] === q[qi]) qi++;
         }
-        return qi === q.length;
+        if (qi === q.length) return true;
+
+        // Word-based fuzzy match
+        const words = name.split(/\s+/);
+        for (const word of words) {
+            if (word.startsWith(q)) return true;
+            // Fuzzy within word
+            let wqi = 0;
+            for (let i = 0; i < word.length && wqi < q.length; i++) {
+                if (word[i] === q[wqi]) wqi++;
+            }
+            if (wqi === q.length) return true;
+        }
+
+        return false;
     }).slice(0, 6);
 
     if (matches.length === 0) {
@@ -194,6 +248,9 @@ function renderSearchResults(query) {
 }
 
 async function selectCustomer(name) {
+    const searchDropdown = document.getElementById('searchDropdown');
+    const searchInput = document.getElementById('searchInput');
+
     searchDropdown.classList.remove('show');
     searchInput.value = name;
 
@@ -205,6 +262,7 @@ async function selectCustomer(name) {
         showCustomerConfirm(customer);
     } catch (e) {
         console.error('Failed to fetch customer:', e);
+        alert('Failed to load customer details. Please try again.');
     }
 }
 
