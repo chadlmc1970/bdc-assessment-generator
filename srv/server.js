@@ -81,6 +81,30 @@ app.get('/api/customers', async (req, res) => {
   }
 });
 
+// Customer detail endpoint - fetch specific customer with solutions
+app.get('/api/customers/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const customer = await findCustomerById(id);
+
+    if (!customer) {
+      return res.status(404).json({ error: 'Customer not found', customerId: id });
+    }
+
+    // Fetch solutions for this customer only
+    const db = await cds.connect.to('db');
+    const solutions = await db.run(
+      SELECT.from('bdc.assessment.PurchasedSolutions').where({ customerId: id })
+    );
+
+    customer.solutions = solutions || [];
+    res.json(customer);
+  } catch (error) {
+    console.error('Get customer detail error:', error);
+    res.status(500).json({ error: 'Failed to fetch customer details', message: error.message });
+  }
+});
+
 // Customer search endpoint
 app.get('/api/customers/search', async (req, res) => {
   try {

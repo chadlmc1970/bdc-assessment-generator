@@ -155,47 +155,9 @@ function renderAccountTable() {
     }
 
     tbody.innerHTML = filteredAccounts.map(account => {
-        // Get solution areas from PurchasedSolutions data
-        const solutions = account.solutions || [];
-        const activeSolutions = solutions.filter(s => s.contractStatus === 'Active');
-
-        // Calculate total ACV across active contracts
-        const totalACV = activeSolutions.reduce((sum, s) => sum + (parseFloat(s.activeACV) || 0), 0);
-
-        // Get top 3 solution areas by ACV
-        const topSolutions = activeSolutions
-            .sort((a, b) => (parseFloat(b.activeACV) || 0) - (parseFloat(a.activeACV) || 0))
-            .slice(0, 3);
-
-        const solutionBadges = topSolutions.length > 0
-            ? topSolutions.map(s => {
-                const shortName = s.solutionArea
-                    .replace('Business Technology Platform', 'BTP')
-                    .replace('Customer Experience', 'CX')
-                    .replace('Data & AI', 'Data/AI')
-                    .replace('Finance and Spend Management', 'Finance')
-                    .replace('Human Capital Management', 'HCM')
-                    .replace('Supply Chain Management', 'SCM');
-                return `<span class="solution-badge badge-active">${shortName}</span>`;
-            }).join('')
-            : '<span style="color: var(--text-tertiary); font-size: 13px;">No active solutions</span>';
-
-        const moreCount = activeSolutions.length > 3
-            ? `<span class="solution-more">+${activeSolutions.length - 3}</span>`
-            : '';
-
         const owner = account.dataOwner || account.aiOwner || 'Unassigned';
 
-        // Format ACV
-        const acvFormatted = totalACV > 0
-            ? new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            }).format(totalACV)
-            : '$0';
-
+        // For initial list, show basic info without solutions (loaded on-demand)
         return `
             <tr class="account-row" onclick="showAccountDetail('${account.id}')">
                 <td class="account-name-cell">
@@ -203,10 +165,10 @@ function renderAccountTable() {
                 </td>
                 <td class="account-id-cell">${account.id}</td>
                 <td class="solutions-cell">
-                    ${solutionBadges}${moreCount}
+                    <span style="color: var(--text-tertiary); font-size: 13px;">Click to view</span>
                 </td>
                 <td class="owner-cell">${owner}</td>
-                <td class="acv-cell">${acvFormatted}</td>
+                <td class="acv-cell">—</td>
             </tr>
         `;
     }).join('');
@@ -220,12 +182,8 @@ function updateAccountCount() {
 // Show account detail panel
 async function showAccountDetail(accountId) {
     try {
-        // Find account in list
-        const account = allAccounts.find(a => a.id === accountId);
-        if (!account) return;
-
-        // Fetch full details including PurchasedSolutions
-        const res = await fetch(`/api/customers/search?q=${encodeURIComponent(account.name)}`);
+        // Fetch full details including PurchasedSolutions from dedicated endpoint
+        const res = await fetch(`/api/customers/${encodeURIComponent(accountId)}`);
         if (!res.ok) throw new Error('Account not found');
         const fullAccount = await res.json();
 

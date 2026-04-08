@@ -38,23 +38,8 @@ async function getCustomers() {
     'iae'
   ]).orderBy('name');
 
-  // Fetch all purchased solutions for all customers
-  const allSolutions = await SELECT.from('bdc.assessment.PurchasedSolutions');
-
-  // Group solutions by customerId
-  const solutionsMap = {};
-  allSolutions.forEach(sol => {
-    if (!solutionsMap[sol.customerId]) {
-      solutionsMap[sol.customerId] = [];
-    }
-    solutionsMap[sol.customerId].push(sol);
-  });
-
-  // Attach solutions to each customer
-  customers.forEach(customer => {
-    customer.solutions = solutionsMap[customer.id] || [];
-  });
-
+  // For initial account list, return lightweight data without solutions
+  // Solutions will be loaded on-demand when viewing account detail
   return customers;
 }
 
