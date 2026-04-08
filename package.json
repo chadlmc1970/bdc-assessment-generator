@@ -31,20 +31,11 @@
   "cds": {
     "requires": {
       "db": {
-        "kind": "hana",
-        "credentials": {}
-      },
-      "[development]": {
-        "db": {
-          "kind": "sql",
-          "credentials": {
-            "url": "db.sqlite"
-          }
+        "kind": "sql",
+        "credentials": {
+          "url": "db.sqlite"
         }
       }
-    },
-    "hana": {
-      "deploy-format": "hdbtable"
     }
   },
   "private": true
