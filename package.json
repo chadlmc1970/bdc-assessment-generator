@@ -8,6 +8,7 @@
     "@cap-js/hana": "^2.7.0",
     "@sap/cds": "^9",
     "@sap/hana-client": "^2.22",
+    "better-sqlite3": "^12.8.0",
     "express": "^4.21.2",
     "xlsx": "^0.18.5"
   },

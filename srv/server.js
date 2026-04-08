@@ -66,15 +66,36 @@ app.get('/api/info', (req, res) => {
   });
 });
 
-// Customer list endpoint
+// Customer list endpoint (with SQLite fallback)
 app.get('/api/customers', async (req, res) => {
   try {
     const ready = req.query.ready === 'true';
-    let customers = await getCustomers();
-    if (ready) {
-      customers = customers.filter(c => c.bdcOverview === 'Yes');
+
+    // Try CDS first
+    try {
+      let customers = await getCustomers();
+      if (ready) {
+        customers = customers.filter(c => c.bdcOverview === 'Yes');
+      }
+      return res.json({ total: customers.length, customers });
+    } catch (cdsError) {
+      // CDS failed, fall back to direct SQLite
+      console.log('CDS failed, using direct SQLite:', cdsError.message);
+      const Database = require('better-sqlite3');
+      const db = new Database('db.sqlite', { readonly: true });
+
+      const customers = db.prepare(`
+        SELECT id, name, erpDeployment, existingBW, otherDatalake,
+               bdcOverview, dataOwner, aiOwner, iae
+        FROM bdc_assessment_Customers
+        ORDER BY name
+      `).all();
+
+      db.close();
+
+      const filtered = ready ? customers.filter(c => c.bdcOverview === 'Yes') : customers;
+      return res.json({ total: filtered.length, customers: filtered });
     }
-    res.json({ total: customers.length, customers });
   } catch (error) {
     console.error('Get customers error:', error);
     res.status(500).json({ error: 'Failed to fetch customers', message: error.message });
