@@ -1,5 +1,5 @@
 ---
-# BTP Cloud Foundry Manifest - Fresh deployment (cache bypass)
+# BTP Cloud Foundry Manifest - SQLite deployment
 applications:
   - name: bdc-assessment-v3
     memory: 512M
@@ -8,8 +8,6 @@ applications:
       - nodejs_buildpack
     path: .
     command: node srv/server.js
-    services:
-      - bdc-hdi-container
     env:
       NODE_ENV: production
       # ANTHROPIC_API_KEY set via cf set-env or user-provided service
