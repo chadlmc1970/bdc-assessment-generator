@@ -146,6 +146,12 @@ body {
     align-items: center;
 }
 
+.user-role {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
 .theme-toggle {
     background: var(--surface-raised);
     border: 1px solid var(--separator);

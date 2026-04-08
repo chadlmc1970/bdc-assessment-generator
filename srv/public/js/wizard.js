@@ -2,6 +2,8 @@
    BDC Assessment Generator - Interview Wizard
    ============================================================ */
 
+console.log('🎬 SCRIPT LOADED');
+
 // ---- State ----
 const state = {
     customer: null,
@@ -107,6 +109,7 @@ let allCustomers = [];
 let searchSelectedIndex = -1;
 
 async function loadCustomers() {
+    console.log('📦 Loading customers...');
     try {
         const res = await fetch('/api/customers');
         const data = await res.json();
@@ -119,36 +122,33 @@ async function loadCustomers() {
 }
 
 function initSearch() {
-    console.log('🚀 initSearch called');
-    console.log('📊 Document readyState:', document.readyState);
+    console.log('🚀 Initializing search...');
 
     loadCustomers();
 
     const searchInput = document.getElementById('searchInput');
     const searchDropdown = document.getElementById('searchDropdown');
 
-    console.log('🔍 searchInput element:', searchInput);
-    console.log('🔍 searchDropdown element:', searchDropdown);
+    console.log('searchInput:', searchInput);
+    console.log('searchDropdown:', searchDropdown);
 
     if (!searchInput || !searchDropdown) {
         console.error('❌ Search elements not found!');
-        console.error('❌ searchInput:', searchInput);
-        console.error('❌ searchDropdown:', searchDropdown);
         return;
     }
 
-    console.log('📝 Attaching input event listener...');
-    searchInput.addEventListener('input', (e) => {
-        console.log('🎯 INPUT EVENT FIRED! Value:', e.target.value);
+    // Input event - triggers search
+    searchInput.addEventListener('input', function(e) {
+        console.log('🎯 INPUT! Value:', e.target.value);
         searchSelectedIndex = -1;
-        renderSearchResults(searchInput.value.trim());
+        const query = searchInput.value.trim();
+        renderSearchResults(query);
     });
-    console.log('✅ Input listener attached');
 
-    console.log('📝 Attaching keydown event listener...');
-    searchInput.addEventListener('keydown', (e) => {
-        console.log('⌨️ KEYDOWN EVENT FIRED! Key:', e.key);
+    // Keydown for navigation
+    searchInput.addEventListener('keydown', function(e) {
         const items = searchDropdown.querySelectorAll('.search-item');
+
         if (e.key === 'ArrowDown') {
             e.preventDefault();
             searchSelectedIndex = Math.min(searchSelectedIndex + 1, items.length - 1);
@@ -167,35 +167,31 @@ function initSearch() {
             searchDropdown.classList.remove('show');
         }
     });
-    console.log('✅ Keydown listener attached');
 
-    document.addEventListener('click', (e) => {
+    // Click outside to close
+    document.addEventListener('click', function(e) {
         if (!searchDropdown.contains(e.target) && e.target !== searchInput) {
             searchDropdown.classList.remove('show');
         }
     });
 
-    console.log('✅ Search initialized successfully');
-    console.log('🧪 Test: Try typing in the search input now...');
-}
-
-// Wait for DOM to be ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initSearch);
-} else {
-    initSearch();
+    console.log('✅ Search initialized');
 }
 
 function highlightSearchItem(items) {
     items.forEach((item, i) => {
-        item.classList.toggle('active', i === searchSelectedIndex);
+        if (i === searchSelectedIndex) {
+            item.classList.add('active');
+        } else {
+            item.classList.remove('active');
+        }
     });
 }
 
 function renderSearchResults(query) {
-    const searchDropdown = document.getElementById('searchDropdown');
+    console.log('🔍 Search query:', query);
 
-    console.log('🔍 Search:', query, '| Customers:', allCustomers.length);
+    const searchDropdown = document.getElementById('searchDropdown');
 
     if (!query || query.length < 1) {
         searchDropdown.classList.remove('show');
@@ -205,31 +201,10 @@ function renderSearchResults(query) {
     const q = query.toLowerCase();
     const matches = allCustomers.filter(c => {
         const name = c.name.toLowerCase();
-
-        // Exact substring match
-        if (name.includes(q)) return true;
-
-        // Fuzzy match - characters in order
-        let qi = 0;
-        for (let i = 0; i < name.length && qi < q.length; i++) {
-            if (name[i] === q[qi]) qi++;
-        }
-        if (qi === q.length) return true;
-
-        // Word-based fuzzy match
-        const words = name.split(/\s+/);
-        for (const word of words) {
-            if (word.startsWith(q)) return true;
-            // Fuzzy within word
-            let wqi = 0;
-            for (let i = 0; i < word.length && wqi < q.length; i++) {
-                if (word[i] === q[wqi]) wqi++;
-            }
-            if (wqi === q.length) return true;
-        }
-
-        return false;
+        return name.includes(q);
     }).slice(0, 6);
+
+    console.log('📊 Matches:', matches.length);
 
     if (matches.length === 0) {
         searchDropdown.classList.remove('show');
@@ -248,6 +223,8 @@ function renderSearchResults(query) {
 }
 
 async function selectCustomer(name) {
+    console.log('✅ Customer selected:', name);
+
     const searchDropdown = document.getElementById('searchDropdown');
     const searchInput = document.getElementById('searchInput');
 
@@ -330,8 +307,8 @@ function showCustomerConfirm(c) {
 function resetSearch() {
     state.customer = null;
     document.getElementById('customerConfirm').style.display = 'none';
-    searchInput.value = '';
-    searchInput.focus();
+    document.getElementById('searchInput').value = '';
+    document.getElementById('searchInput').focus();
 }
 
 // ---- Interview Flow ----
@@ -500,7 +477,6 @@ async function submitInterview() {
 }
 
 function generateMockScenarios() {
-    const name = state.customer ? state.customer.name : 'Customer';
     const baseInvestment = state.answers.riskTolerance === 'aggressive' ? 3.2 :
                            state.answers.riskTolerance === 'conservative' ? 1.0 : 1.8;
 
@@ -588,4 +564,15 @@ function startAgentDemo() {
         return;
     }
     window.location.href = `/agent-demo.html?customer=${state.customer.id}`;
+}
+
+// ---- Initialize when DOM is ready ----
+console.log('📋 Document readyState:', document.readyState);
+
+if (document.readyState === 'loading') {
+    console.log('⏳ Waiting for DOMContentLoaded...');
+    document.addEventListener('DOMContentLoaded', initSearch);
+} else {
+    console.log('✅ DOM already ready, initializing now');
+    initSearch();
 }

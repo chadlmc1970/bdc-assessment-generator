@@ -113,7 +113,7 @@ async function loadAccounts() {
 
 // Filter account list with fuzzy search (from wizard.js lines 169-178)
 function filterAccountList(query) {
-    if (!query || query.length < 2) {
+    if (!query || query.length < 1) {
         filteredAccounts = allAccounts;
     } else {
         const q = query.toLowerCase();
@@ -123,17 +123,31 @@ function filterAccountList(query) {
             const dataOwner = (account.dataOwner || '').toLowerCase();
             const aiOwner = (account.aiOwner || '').toLowerCase();
 
-            // Exact match
+            // Exact substring match
             if (name.includes(q) || id.includes(q) || dataOwner.includes(q) || aiOwner.includes(q)) {
                 return true;
             }
 
-            // Fuzzy match on name
+            // Fuzzy match on name - allow characters to appear in order
             let qi = 0;
             for (let i = 0; i < name.length && qi < q.length; i++) {
                 if (name[i] === q[qi]) qi++;
             }
-            return qi === q.length;
+            if (qi === q.length) return true;
+
+            // Word-based fuzzy match - check if query matches start of any word
+            const words = name.split(/\s+/);
+            for (const word of words) {
+                if (word.startsWith(q)) return true;
+                // Fuzzy match within word
+                let wqi = 0;
+                for (let i = 0; i < word.length && wqi < q.length; i++) {
+                    if (word[i] === q[wqi]) wqi++;
+                }
+                if (wqi === q.length) return true;
+            }
+
+            return false;
         });
     }
 
@@ -484,7 +498,8 @@ function goToPhase(phase) {
   }
   const target = document.getElementById(`phase${phase}`);
   if (target) {
-    target.style.display = 'block';
+    // Phase 0 uses flex layout, others use block
+    target.style.display = phase === 0 ? 'flex' : 'block';
     target.classList.add('agent-animate-fade-in-up');
   }
   currentPhase = phase;
