@@ -21,7 +21,7 @@ async function connect() {
 
 /**
  * Get all customers with ERP/BW data for dropdown
- * @returns {Promise<Array>} Customer list
+ * @returns {Promise<Array>} Customer list with solutions
  */
 async function getCustomers() {
   await connect();
@@ -32,8 +32,28 @@ async function getCustomers() {
     'erpDeployment',
     'existingBW',
     'otherDatalake',
-    'bdcOverview'
+    'bdcOverview',
+    'dataOwner',
+    'aiOwner',
+    'iae'
   ]).orderBy('name');
+
+  // Fetch all purchased solutions for all customers
+  const allSolutions = await SELECT.from('bdc.assessment.PurchasedSolutions');
+
+  // Group solutions by customerId
+  const solutionsMap = {};
+  allSolutions.forEach(sol => {
+    if (!solutionsMap[sol.customerId]) {
+      solutionsMap[sol.customerId] = [];
+    }
+    solutionsMap[sol.customerId].push(sol);
+  });
+
+  // Attach solutions to each customer
+  customers.forEach(customer => {
+    customer.solutions = solutionsMap[customer.id] || [];
+  });
 
   return customers;
 }
@@ -53,7 +73,7 @@ async function findCustomerById(customerId) {
 /**
  * Search customers by name (fuzzy match)
  * @param {string} query - Search query
- * @returns {Promise<Array>} Matching customers
+ * @returns {Promise<Array>} Matching customers with solutions
  */
 async function searchCustomers(query) {
   await connect();
@@ -61,6 +81,27 @@ async function searchCustomers(query) {
   const customers = await SELECT.from('bdc.assessment.Customers')
     .where`lower(name) like ${'%' + query.toLowerCase() + '%'}`
     .orderBy('name');
+
+  // Fetch solutions for matched customers
+  if (customers.length > 0) {
+    const customerIds = customers.map(c => c.id);
+    const solutions = await SELECT.from('bdc.assessment.PurchasedSolutions')
+      .where({ customerId: { in: customerIds } });
+
+    // Group solutions by customer
+    const solutionsMap = {};
+    solutions.forEach(sol => {
+      if (!solutionsMap[sol.customerId]) {
+        solutionsMap[sol.customerId] = [];
+      }
+      solutionsMap[sol.customerId].push(sol);
+    });
+
+    // Attach solutions to customers
+    customers.forEach(customer => {
+      customer.solutions = solutionsMap[customer.id] || [];
+    });
+  }
 
   return customers;
 }

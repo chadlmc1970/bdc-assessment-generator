@@ -4,385 +4,431 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Agent Demo - BDC Assessment Generator</title>
-    <meta name="description" content="Interactive demonstration of AI-powered assessment generation with Claude Sonnet 4.6">
     <link rel="stylesheet" href="/css/app.css">
     <link rel="stylesheet" href="/css/agent-demo.css">
 </head>
 <body class="agent-demo-page">
-    <div class="app-container">
-        <!-- Top Bar -->
-        <div class="top-bar">
-            <div class="top-bar-brand">
-                <img src="/images/sap-logo.jpg" alt="SAP Logo" class="top-bar-logo-img">
-                <span class="top-bar-title">BDC Assessment Generator</span>
+    <!-- Top Bar - Internal CRM Style -->
+    <div class="top-bar crm-header">
+        <div class="top-bar-brand">
+            <img src="/images/sap-logo.jpg" alt="SAP Logo" class="top-bar-logo-img">
+            <span class="top-bar-title">SAP Account Management - BDC Assessment Tool</span>
+        </div>
+        <div class="crm-user-info">
+            <span class="user-role">Account Executive</span>
+        </div>
+    </div>
+
+    <!-- Fixed Progress Bar -->
+    <div class="progress-bar-container">
+        <div class="progress-step">
+            <div class="progress-dot progress-dot-active" data-phase="0"></div>
+            <span class="progress-label">Interview</span>
+        </div>
+        <div class="progress-connector"></div>
+        <div class="progress-step">
+            <div class="progress-dot" data-phase="1"></div>
+            <span class="progress-label">Discovery</span>
+        </div>
+        <div class="progress-connector"></div>
+        <div class="progress-step">
+            <div class="progress-dot" data-phase="2"></div>
+            <span class="progress-label">Briefing</span>
+        </div>
+        <div class="progress-connector"></div>
+        <div class="progress-step">
+            <div class="progress-dot" data-phase="3"></div>
+            <span class="progress-label">Generation</span>
+        </div>
+        <div class="progress-connector"></div>
+        <div class="progress-step">
+            <div class="progress-dot" data-phase="4"></div>
+            <span class="progress-label">Results</span>
+        </div>
+    </div>
+
+    <!-- Phase 0: Internal CRM Account List & Interview -->
+    <div id="phase0" class="phase-container crm-phase" style="display: block;">
+        <!-- Account List View (initially visible) -->
+        <div id="accountListView">
+            <!-- Search Header -->
+            <div class="crm-toolbar">
+                <div class="crm-search-box">
+                    <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" class="crm-search-input" id="accountSearchInput"
+                           placeholder="Search accounts by name, ID, or owner..."
+                           autocomplete="off">
+                </div>
+                <div class="crm-results-count">
+                    <span id="accountCount">0</span> accounts
+                </div>
             </div>
-            <div class="top-bar-actions">
-                <a href="/wizard.html" class="agent-btn agent-btn-ghost agent-btn-sm">Exit Demo</a>
-                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
-                    <span id="themeIcon">🌙</span>
-                    <span id="themeLabel">Dark</span>
-                </button>
+
+            <!-- Account Table -->
+            <div class="crm-table-container">
+                <table class="crm-table">
+                    <thead>
+                        <tr>
+                            <th>Account Name</th>
+                            <th>Account ID</th>
+                            <th>Solution Areas</th>
+                            <th>Owner</th>
+                            <th>Total ACV</th>
+                        </tr>
+                    </thead>
+                    <tbody id="accountTableBody">
+                        <!-- Dynamically populated -->
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <!-- Breadcrumb Navigation -->
-        <div class="agent-demo-container">
-            <nav aria-label="Breadcrumb" style="margin-bottom: 24px;">
-                <ol style="display: flex; gap: 8px; list-style: none; padding: 0; font-size: 13px; color: #98989d;">
-                    <li><a href="/wizard.html" style="color: #007aff; text-decoration: none;">Home</a></li>
-                    <li aria-hidden="true">/</li>
-                    <li aria-current="page" style="color: #ebebf5;">AI Agent Demo</li>
-                </ol>
-            </nav>
-
-            <!-- Progress Indicator (4 Steps) -->
-            <div class="progress-bar-container" role="progressbar" aria-label="Demo progress" aria-valuenow="1" aria-valuemin="1" aria-valuemax="4">
-                <div class="progress-step">
-                    <div class="progress-dot progress-dot-active" data-phase="1"></div>
-                    <span class="progress-label">Discovery</span>
-                </div>
-                <div class="progress-connector"></div>
-                <div class="progress-step">
-                    <div class="progress-dot" data-phase="2"></div>
-                    <span class="progress-label">Briefing</span>
-                </div>
-                <div class="progress-connector"></div>
-                <div class="progress-step">
-                    <div class="progress-dot" data-phase="3"></div>
-                    <span class="progress-label">Generation</span>
-                </div>
-                <div class="progress-connector"></div>
-                <div class="progress-step">
-                    <div class="progress-dot" data-phase="4"></div>
-                    <span class="progress-label">Results</span>
-                </div>
+        <!-- Account Detail Panel (slides in from right) -->
+        <div id="accountDetailPanel" class="account-detail-panel" style="display: none;">
+            <div class="panel-header">
+                <button class="panel-close-btn" onclick="closeAccountDetail()">&times;</button>
+                <h2 class="panel-title" id="detailAccountName">Account Name</h2>
+                <div class="panel-subtitle" id="detailAccountId">ID: 12345</div>
             </div>
 
-            <!-- Phase 1: Discovery - 4 Source Cards -->
-            <div id="phase1" class="phase-container">
-                <div class="phase-header">
-                    <div class="phase-badge">Phase 1</div>
-                    <h1 class="phase-title">Intelligence Discovery</h1>
-                    <p class="phase-subtitle">AI agents fetch real customer data and competitive intelligence</p>
-                </div>
-
-                <div class="source-grid">
-                    <!-- CRM Source -->
-                    <div id="source-crm" class="source-card" style="display: none;">
-                        <div class="source-icon">📊</div>
-                        <div class="source-details">
-                            <div class="source-title">CRM Data</div>
-                            <div class="source-detail">Fetching customer profile...</div>
-                            <div class="source-status">Waiting...</div>
-                        </div>
-                    </div>
-
-                    <!-- Gartner Source -->
-                    <div id="source-gartner" class="source-card" style="display: none;">
-                        <div class="source-icon">📈</div>
-                        <div class="source-details">
-                            <div class="source-title">Gartner Benchmarks</div>
-                            <div class="source-detail">Fetching industry data...</div>
-                            <div class="source-status">Waiting...</div>
-                        </div>
-                    </div>
-
-                    <!-- Benchmarks Source -->
-                    <div id="source-benchmarks" class="source-card" style="display: none;">
-                        <div class="source-icon">⚙️</div>
-                        <div class="source-details">
-                            <div class="source-title">SAP Benchmarks</div>
-                            <div class="source-detail">Fetching transformation data...</div>
-                            <div class="source-status">Waiting...</div>
-                        </div>
-                    </div>
-
-                    <!-- Case Studies Source -->
-                    <div id="source-cases" class="source-card" style="display: none;">
-                        <div class="source-icon">📁</div>
-                        <div class="source-details">
-                            <div class="source-title">Similar Case Studies</div>
-                            <div class="source-detail">Matching customer profiles...</div>
-                            <div class="source-status">Waiting...</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Phase 2: Briefing -->
-            <div id="phase2" class="phase-container" style="display: none;">
-                <div class="phase-header">
-                    <div class="phase-badge">Phase 2</div>
-                    <h1 class="phase-title">Strategic Briefing</h1>
-                    <p class="phase-subtitle">AI synthesizes intelligence into a structured business case</p>
-                </div>
-
-                <!-- Executive Summary -->
-                <div class="briefing-section">
-                    <h2 class="section-heading">Executive Summary</h2>
-                    <div class="summary-grid">
-                        <div class="summary-box summary-box-challenge">
-                            <div class="summary-label">Business Challenge</div>
-                            <div class="summary-text" id="briefing-challenge">Analyzing customer data...</div>
-                        </div>
-                        <div class="summary-box summary-box-solution">
-                            <div class="summary-label">Proposed Solution</div>
-                            <div class="summary-text" id="briefing-solution">Generating recommendations...</div>
-                        </div>
-                        <div class="summary-box summary-box-timeline">
-                            <div class="summary-label">Timeline & Funding</div>
-                            <div class="summary-text" id="briefing-timeline">Calculating timelines...</div>
-                        </div>
+            <div class="panel-content">
+                <!-- Solution Areas Section -->
+                <div class="detail-section">
+                    <h3 class="detail-section-title">Solution Areas & Contracts</h3>
+                    <div class="solutions-list" id="detailEntitlements">
+                        <!-- Dynamically populated -->
                     </div>
                 </div>
 
-                <!-- Sources Referenced -->
-                <div id="sources-referenced" class="briefing-section" style="display: none;">
-                    <h3 class="section-subheading">Intelligence Sources</h3>
-                    <div class="sources-list">
-                        <span class="source-pill">📊 CRM Profile</span>
-                        <span class="source-pill">📈 Gartner Benchmarks</span>
-                        <span class="source-pill">⚙️ SAP Transformation Data</span>
-                        <span class="source-pill">📁 Case Studies (3)</span>
+                <!-- System Details -->
+                <div class="detail-section">
+                    <h3 class="detail-section-title">System Details</h3>
+                    <div class="detail-grid" id="detailSystemGrid">
+                        <!-- Dynamically populated -->
                     </div>
                 </div>
 
-                <!-- AI Reasoning -->
-                <div id="reasoning-section" class="briefing-section" style="display: none;">
-                    <h3 class="section-subheading">AI Reasoning Trail</h3>
-                    <div class="reasoning-box">
-                        <div class="reasoning-step">✓ Identified high-volume order processing challenge</div>
-                        <div class="reasoning-step">✓ Matched with industry benchmarks for error rates</div>
-                        <div class="reasoning-step">✓ Calculated financial impact based on CRM metrics</div>
-                        <div class="reasoning-step">✓ Recommended Datasphere + SAC based on similar cases</div>
-                        <div class="reasoning-step">✓ Validated ECIF eligibility for co-funding</div>
+                <!-- Account Owners -->
+                <div class="detail-section">
+                    <h3 class="detail-section-title">Account Team</h3>
+                    <div class="detail-owners" id="detailOwners">
+                        <!-- Dynamically populated -->
                     </div>
                 </div>
 
-                <div class="action-group">
-                    <button class="agent-btn agent-btn-primary agent-btn-lg" onclick="goToPhase(3)">
-                        Generate Financial Scenarios
+                <!-- Action Button -->
+                <div class="panel-actions">
+                    <button class="btn btn-primary btn-lg btn-full" onclick="startAccountAssessment()">
+                        <span>Start BDC Assessment</span>
                         <span class="arrow-icon">→</span>
                     </button>
                 </div>
             </div>
+        </div>
 
-            <!-- Phase 3: Generation - 3 Agent Cards + Narrative -->
-            <div id="phase3" class="phase-container" style="display: none;">
-                <div class="phase-header">
-                    <div class="phase-badge">Phase 3</div>
-                    <h1 class="phase-title">AI Generation Pipeline</h1>
-                    <p class="phase-subtitle">Three specialized agents collaborate to generate scenarios</p>
+        <!-- Interview Phase (hidden until account selected and Start clicked) -->
+        <div id="agentInterviewPhase" style="display: none;">
+            <div class="interview-overlay">
+                <div class="interview-header">
+                    <h2 id="interviewAccountName">Account Assessment</h2>
+                    <button class="btn btn-ghost" onclick="backToAccountList()">← Back to Accounts</button>
                 </div>
 
-                <!-- Agent Cards -->
-                <div class="agent-grid">
-                    <!-- Financial Model Agent -->
-                    <div id="agent-financial" class="agent-card">
-                        <div class="agent-icon" style="background: #007aff;">💰</div>
-                        <div class="agent-details">
-                            <div class="agent-title">Financial Model Agent</div>
-                            <div class="agent-status">Waiting to start...</div>
-                            <div class="agent-progress-bar">
-                                <div class="agent-progress-fill" style="width: 0%;"></div>
-                            </div>
+                <div class="interview-container">
+                    <!-- Progress -->
+                    <div class="interview-progress">
+                        <div class="interview-progress-header">
+                            <span class="interview-step-label" id="agentStepLabel">Question 1</span>
+                            <span class="interview-step-count" id="agentStepCount">1 of 5</span>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-fill" id="agentProgressFill" style="width: 20%"></div>
                         </div>
                     </div>
 
-                    <!-- ECIF Calculator Agent -->
-                    <div id="agent-ecif" class="agent-card">
-                        <div class="agent-icon" style="background: #2fa82f;">🎯</div>
-                        <div class="agent-details">
-                            <div class="agent-title">ECIF Calculator Agent</div>
-                            <div class="agent-status">Waiting to start...</div>
-                            <div class="agent-progress-bar">
-                                <div class="agent-progress-fill" style="width: 0%;"></div>
-                            </div>
-                        </div>
+                    <!-- Question Area (dynamically rendered) -->
+                    <div id="agentQuestionArea"></div>
+
+                    <!-- Navigation -->
+                    <div class="interview-nav">
+                        <button class="btn btn-ghost" id="agentBackBtn" onclick="agentGoBack()" style="visibility: hidden;">Back</button>
+                        <button class="btn btn-primary" id="agentNextBtn" onclick="agentGoNext()" disabled>Continue</button>
                     </div>
-
-                    <!-- Narrative Generator Agent -->
-                    <div id="agent-narrative" class="agent-card">
-                        <div class="agent-icon" style="background: #5856d6;">📝</div>
-                        <div class="agent-details">
-                            <div class="agent-title">Narrative Generator Agent</div>
-                            <div class="agent-status">Waiting to start...</div>
-                            <div class="agent-progress-bar">
-                                <div class="agent-progress-fill" style="width: 0%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Live Narrative Stream -->
-                <div class="narrative-container">
-                    <h3 class="section-subheading">Live AI Narrative</h3>
-                    <div id="narrative-stream" class="narrative-stream">
-                        Waiting for agents to begin generation...
-                    </div>
-                </div>
-            </div>
-
-            <!-- Phase 4: Results - ECIF + 3 Scenarios + PDFs -->
-            <div id="phase4" class="phase-container" style="display: none;">
-                <div class="phase-header">
-                    <div class="phase-badge">Phase 4</div>
-                    <h1 class="phase-title">Financial Scenarios</h1>
-                    <p class="phase-subtitle">Interactive dashboards and executive PDFs ready for customer delivery</p>
-                </div>
-
-                <!-- ECIF Co-Funding Banner -->
-                <div class="ecif-banner">
-                    <div class="ecif-icon">💼</div>
-                    <div class="ecif-details">
-                        <div class="ecif-label">Eligible for SAP ECIF Co-Funding</div>
-                        <div class="ecif-amount" id="ecif-amount">Calculating...</div>
-                    </div>
-                    <div class="ecif-badge">✓ Qualified</div>
-                </div>
-
-                <!-- Scenario Cards -->
-                <div class="scenario-grid">
-                    <!-- Conservative Scenario -->
-                    <div id="scenario-conservative" class="scenario-card" style="display: none;">
-                        <div class="scenario-header">
-                            <div class="scenario-title">Conservative</div>
-                            <div class="scenario-description">Datasphere only • 45% error reduction</div>
-                        </div>
-                        <div class="scenario-metrics">
-                            <div class="scenario-metric">
-                                <div class="metric-label">Investment</div>
-                                <div class="metric-value scenario-investment">$1.20M</div>
-                            </div>
-                            <div class="scenario-metric">
-                                <div class="metric-label">3-Year Return</div>
-                                <div class="metric-value scenario-return">$2.08M</div>
-                            </div>
-                            <div class="scenario-metric">
-                                <div class="metric-label">ROI</div>
-                                <div class="metric-value scenario-roi">215%</div>
-                            </div>
-                            <div class="scenario-metric">
-                                <div class="metric-label">Payback</div>
-                                <div class="metric-value scenario-payback">23 mo</div>
-                            </div>
-                        </div>
-                        <button class="agent-btn agent-btn-secondary" onclick="window.open('/dashboard.html?demo=conservative', '_blank')">
-                            Open Dashboard →
-                        </button>
-                    </div>
-
-                    <!-- Recommended Scenario -->
-                    <div id="scenario-recommended" class="scenario-card scenario-card-recommended" style="display: none;">
-                        <div class="scenario-badge">BEST VALUE</div>
-                        <div class="scenario-header">
-                            <div class="scenario-title">Recommended</div>
-                            <div class="scenario-description">Datasphere + SAC • 70% error reduction</div>
-                        </div>
-                        <div class="scenario-metrics">
-                            <div class="scenario-metric">
-                                <div class="metric-label">Investment</div>
-                                <div class="metric-value scenario-investment">$1.67M</div>
-                            </div>
-                            <div class="scenario-metric">
-                                <div class="metric-label">3-Year Return</div>
-                                <div class="metric-value scenario-return">$3.79M</div>
-                            </div>
-                            <div class="scenario-metric">
-                                <div class="metric-label">ROI</div>
-                                <div class="metric-value scenario-roi">227%</div>
-                            </div>
-                            <div class="scenario-metric">
-                                <div class="metric-label">Payback</div>
-                                <div class="metric-value scenario-payback">18 mo</div>
-                            </div>
-                        </div>
-                        <button class="agent-btn agent-btn-primary" onclick="window.open('/dashboard.html?demo=recommended', '_blank')">
-                            Open Dashboard →
-                        </button>
-                    </div>
-
-                    <!-- Aggressive Scenario -->
-                    <div id="scenario-aggressive" class="scenario-card" style="display: none;">
-                        <div class="scenario-header">
-                            <div class="scenario-title">Aggressive</div>
-                            <div class="scenario-description">Full analytics stack + AI • 85% error reduction</div>
-                        </div>
-                        <div class="scenario-metrics">
-                            <div class="scenario-metric">
-                                <div class="metric-label">Investment</div>
-                                <div class="metric-value scenario-investment">$2.79M</div>
-                            </div>
-                            <div class="scenario-metric">
-                                <div class="metric-label">3-Year Return</div>
-                                <div class="metric-value scenario-return">$6.25M</div>
-                            </div>
-                            <div class="scenario-metric">
-                                <div class="metric-label">ROI</div>
-                                <div class="metric-value scenario-roi">227%</div>
-                            </div>
-                            <div class="scenario-metric">
-                                <div class="metric-label">Payback</div>
-                                <div class="metric-value scenario-payback">16 mo</div>
-                            </div>
-                        </div>
-                        <button class="agent-btn agent-btn-secondary" onclick="window.open('/dashboard.html?demo=aggressive', '_blank')">
-                            Open Dashboard →
-                        </button>
-                    </div>
-                </div>
-
-                <!-- PDF Downloads -->
-                <div class="pdf-downloads">
-                    <h3 class="section-subheading">Executive Reports</h3>
-                    <div class="pdf-grid">
-                        <button class="agent-btn agent-btn-secondary" onclick="window.open('/api/pdf/executive-summary?customer=loves', '_blank')">
-                            📄 Executive Summary (PDF)
-                        </button>
-                        <button class="agent-btn agent-btn-secondary" onclick="window.open('/api/pdf/financial-appendix?customer=loves', '_blank')">
-                            📊 Financial Appendix (PDF)
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Next Actions -->
-                <div class="action-group">
-                    <button class="agent-btn agent-btn-ghost" onclick="restartDemo()">
-                        <span class="arrow-icon">↺</span>
-                        Restart Demo
-                    </button>
-                    <button class="agent-btn agent-btn-secondary" onclick="window.location.href='/wizard.html'">
-                        Try Real Version
-                    </button>
                 </div>
             </div>
         </div>
-
-        <!-- Enterprise Footer -->
-        <footer class="enterprise-footer">
-            <div class="footer-content">
-                <div class="footer-badge-group">
-                    <div class="footer-badge">
-                        <span class="badge-icon">✓</span>
-                        <span>Powered by Claude Sonnet 4.6</span>
-                    </div>
-                    <div class="footer-badge">
-                        <span class="badge-icon">⚡</span>
-                        <span>8-12 Second Generation</span>
-                    </div>
-                    <div class="footer-badge">
-                        <span class="badge-icon">🔒</span>
-                        <span>Enterprise Security</span>
-                    </div>
-                </div>
-                <div class="footer-meta">
-                    <span>© 2026 SAP SE • Business Development Consulting</span>
-                </div>
-            </div>
-        </footer>
     </div>
 
-    <!-- Agent Demo JavaScript -->
+    <!-- Phase 1: Discovery -->
+    <div id="phase1" class="phase-container">
+        <div class="phase-content">
+            <div class="phase-header">
+                <div class="phase-badge">Phase 2 of 5</div>
+                <h1 class="phase-title">Intelligence Discovery</h1>
+                <p class="phase-subtitle">AI agents fetch real customer data and competitive intelligence</p>
+            </div>
+
+            <div class="source-grid">
+                <div id="source-crm" class="source-card" style="display: none;">
+                    <div class="source-icon">📊</div>
+                    <div class="source-details">
+                        <div class="source-title">CRM Data</div>
+                        <div class="source-detail">Fetching customer profile...</div>
+                        <div class="source-status">Waiting...</div>
+                    </div>
+                </div>
+
+                <div id="source-gartner" class="source-card" style="display: none;">
+                    <div class="source-icon">📈</div>
+                    <div class="source-details">
+                        <div class="source-title">Gartner Benchmarks</div>
+                        <div class="source-detail">Fetching industry data...</div>
+                        <div class="source-status">Waiting...</div>
+                    </div>
+                </div>
+
+                <div id="source-benchmarks" class="source-card" style="display: none;">
+                    <div class="source-icon">⚙️</div>
+                    <div class="source-details">
+                        <div class="source-title">SAP Benchmarks</div>
+                        <div class="source-detail">Fetching transformation data...</div>
+                        <div class="source-status">Waiting...</div>
+                    </div>
+                </div>
+
+                <div id="source-cases" class="source-card" style="display: none;">
+                    <div class="source-icon">📁</div>
+                    <div class="source-details">
+                        <div class="source-title">Similar Case Studies</div>
+                        <div class="source-detail">Matching customer profiles...</div>
+                        <div class="source-status">Waiting...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 2: Briefing -->
+    <div id="phase2" class="phase-container" style="display: none;">
+        <div class="phase-content">
+            <div class="phase-header">
+                <div class="phase-badge">Phase 3 of 5</div>
+                <h1 class="phase-title">Strategic Briefing</h1>
+                <p class="phase-subtitle">AI synthesizes intelligence into a structured business case</p>
+            </div>
+
+            <div class="summary-grid">
+                <div class="summary-box summary-box-challenge">
+                    <div class="summary-label">Business Challenge</div>
+                    <div class="summary-text" id="briefing-challenge">Analyzing customer data...</div>
+                </div>
+                <div class="summary-box summary-box-solution">
+                    <div class="summary-label">Proposed Solution</div>
+                    <div class="summary-text" id="briefing-solution">Generating recommendations...</div>
+                </div>
+                <div class="summary-box summary-box-timeline">
+                    <div class="summary-label">Timeline & Funding</div>
+                    <div class="summary-text" id="briefing-timeline">Calculating timelines...</div>
+                </div>
+            </div>
+
+            <div id="sources-referenced" class="sources-section" style="display: none;">
+                <div class="sources-list">
+                    <span class="source-pill">📊 CRM Profile</span>
+                    <span class="source-pill">📈 Gartner Benchmarks</span>
+                    <span class="source-pill">⚙️ SAP Transformation Data</span>
+                    <span class="source-pill">📁 Case Studies (3)</span>
+                </div>
+            </div>
+
+            <div id="reasoning-section" class="reasoning-section" style="display: none;">
+                <h3 class="section-subheading">AI Reasoning Trail</h3>
+                <div class="reasoning-box">
+                    <div class="reasoning-step">✓ Identified high-volume order processing challenge</div>
+                    <div class="reasoning-step">✓ Matched with industry benchmarks for error rates</div>
+                    <div class="reasoning-step">✓ Calculated financial impact based on CRM metrics</div>
+                    <div class="reasoning-step">✓ Recommended Datasphere + SAC based on similar cases</div>
+                </div>
+            </div>
+
+            <button class="agent-btn agent-btn-primary agent-btn-lg" onclick="goToPhase(3)">
+                Generate Scenarios
+                <span class="arrow-icon">→</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Phase 3: Generation -->
+    <div id="phase3" class="phase-container" style="display: none;">
+        <div class="phase-content">
+            <div class="phase-header">
+                <div class="phase-badge">Phase 4 of 5</div>
+                <h1 class="phase-title">AI Generation Pipeline</h1>
+                <p class="phase-subtitle">Three specialized agents collaborate to generate scenarios</p>
+            </div>
+
+            <div class="agent-grid">
+                <div id="agent-financial" class="agent-card">
+                    <div class="agent-icon" style="background: #007AFF;">💰</div>
+                    <div class="agent-details">
+                        <div class="agent-title">Financial Model Agent</div>
+                        <div class="agent-status">Waiting to start...</div>
+                        <div class="agent-progress-bar">
+                            <div class="agent-progress-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="agent-ecif" class="agent-card">
+                    <div class="agent-icon" style="background: #34C759;">🎯</div>
+                    <div class="agent-details">
+                        <div class="agent-title">ECIF Calculator Agent</div>
+                        <div class="agent-status">Waiting to start...</div>
+                        <div class="agent-progress-bar">
+                            <div class="agent-progress-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="agent-narrative" class="agent-card">
+                    <div class="agent-icon" style="background: #AF52DE;">📝</div>
+                    <div class="agent-details">
+                        <div class="agent-title">Narrative Generator Agent</div>
+                        <div class="agent-status">Waiting to start...</div>
+                        <div class="agent-progress-bar">
+                            <div class="agent-progress-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="narrative-container">
+                <div id="narrative-stream" class="narrative-stream">
+                    Waiting for agents to begin generation...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 4: Results -->
+    <div id="phase4" class="phase-container" style="display: none;">
+        <div class="phase-content">
+            <div class="phase-header">
+                <div class="phase-badge">Phase 5 of 5</div>
+                <h1 class="phase-title">Financial Scenarios</h1>
+                <p class="phase-subtitle">Interactive dashboards and executive PDFs ready for delivery</p>
+            </div>
+
+            <div class="ecif-banner">
+                <div class="ecif-icon">💼</div>
+                <div class="ecif-details">
+                    <div class="ecif-label">Eligible for SAP ECIF Co-Funding</div>
+                    <div class="ecif-amount" id="ecif-amount">$950,000</div>
+                </div>
+                <div class="ecif-badge">✓ Qualified</div>
+            </div>
+
+            <div class="scenario-grid">
+                <div id="scenario-conservative" class="scenario-card" style="display: none;">
+                    <div class="scenario-header">
+                        <div class="scenario-title">Conservative</div>
+                        <div class="scenario-description">Datasphere only • 45% error reduction</div>
+                    </div>
+                    <div class="scenario-metrics">
+                        <div class="scenario-metric">
+                            <div class="metric-label">Investment</div>
+                            <div class="metric-value scenario-investment">$1.20M</div>
+                        </div>
+                        <div class="scenario-metric">
+                            <div class="metric-label">3-Yr Return</div>
+                            <div class="metric-value scenario-return">$2.08M</div>
+                        </div>
+                        <div class="scenario-metric">
+                            <div class="metric-label">ROI</div>
+                            <div class="metric-value scenario-roi">215%</div>
+                        </div>
+                        <div class="scenario-metric">
+                            <div class="metric-label">Payback</div>
+                            <div class="metric-value scenario-payback">23 mo</div>
+                        </div>
+                    </div>
+                    <button class="agent-btn agent-btn-secondary agent-btn-sm" onclick="window.open('/dashboard.html?demo=conservative', '_blank')">
+                        Open Dashboard
+                    </button>
+                </div>
+
+                <div id="scenario-recommended" class="scenario-card scenario-card-recommended" style="display: none;">
+                    <div class="scenario-badge">BEST VALUE</div>
+                    <div class="scenario-header">
+                        <div class="scenario-title">Recommended</div>
+                        <div class="scenario-description">Datasphere + SAC • 70% error reduction</div>
+                    </div>
+                    <div class="scenario-metrics">
+                        <div class="scenario-metric">
+                            <div class="metric-label">Investment</div>
+                            <div class="metric-value scenario-investment">$1.67M</div>
+                        </div>
+                        <div class="scenario-metric">
+                            <div class="metric-label">3-Yr Return</div>
+                            <div class="metric-value scenario-return">$3.79M</div>
+                        </div>
+                        <div class="scenario-metric">
+                            <div class="metric-label">ROI</div>
+                            <div class="metric-value scenario-roi">227%</div>
+                        </div>
+                        <div class="scenario-metric">
+                            <div class="metric-label">Payback</div>
+                            <div class="metric-value scenario-payback">18 mo</div>
+                        </div>
+                    </div>
+                    <button class="agent-btn agent-btn-primary agent-btn-sm" onclick="window.open('/dashboard.html?demo=recommended', '_blank')">
+                        Open Dashboard
+                    </button>
+                </div>
+
+                <div id="scenario-aggressive" class="scenario-card" style="display: none;">
+                    <div class="scenario-header">
+                        <div class="scenario-title">Aggressive</div>
+                        <div class="scenario-description">Full analytics stack + AI • 85% error reduction</div>
+                    </div>
+                    <div class="scenario-metrics">
+                        <div class="scenario-metric">
+                            <div class="metric-label">Investment</div>
+                            <div class="metric-value scenario-investment">$2.79M</div>
+                        </div>
+                        <div class="scenario-metric">
+                            <div class="metric-label">3-Yr Return</div>
+                            <div class="metric-value scenario-return">$6.25M</div>
+                        </div>
+                        <div class="scenario-metric">
+                            <div class="metric-label">ROI</div>
+                            <div class="metric-value scenario-roi">227%</div>
+                        </div>
+                        <div class="scenario-metric">
+                            <div class="metric-label">Payback</div>
+                            <div class="metric-value scenario-payback">16 mo</div>
+                        </div>
+                    </div>
+                    <button class="agent-btn agent-btn-secondary agent-btn-sm" onclick="window.open('/dashboard.html?demo=aggressive', '_blank')">
+                        Open Dashboard
+                    </button>
+                </div>
+            </div>
+
+            <div class="action-group">
+                <button class="agent-btn agent-btn-ghost" onclick="restartDemo()">
+                    ↺ Restart Demo
+                </button>
+                <button class="agent-btn agent-btn-secondary" onclick="window.location.href='/wizard.html'">
+                    Try Real Version
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="/js/agent-demo.js"></script>
 </body>
 </html>

@@ -5,6 +5,7 @@
 
 const cds = require('@sap/cds');
 const express = require('express');
+const path = require('path');
 const Anthropic = require('@anthropic-ai/sdk');
 const { FinancialModel } = require('./financial-model');
 const { calculateScenarios, adjustScenario } = require('./scenario-calculator');
@@ -27,9 +28,11 @@ const anthropic = new Anthropic({
 const app = express();
 app.use(express.json());
 
-// Serve static files including PDFs
-app.use(express.static('srv/public'));
-app.use('/downloads', express.static('srv/public/downloads'));
+// Serve static files including PDFs (use absolute paths)
+const publicPath = path.join(__dirname, 'public');
+const downloadsPath = path.join(__dirname, 'public', 'downloads');
+app.use(express.static(publicPath));
+app.use('/downloads', express.static(downloadsPath));
 
 // Health check
 app.get('/health', async (req, res) => {
@@ -257,12 +260,6 @@ app.get('/api/intelligence/analyze-customer', analyzeCustomer);
 app.get('/api/narrative/stream-assessment', streamAssessment);
 
 // ===== Legacy Chat Endpoint (SSE) =====
-
-// Serve static files - must be after API routes
-app.use(express.static('srv/public'));
-app.use('/downloads', express.static('srv/public/downloads'));
-
-// ===== Legacy chat endpoint (kept for backwards compatibility) =====
 app.get('/api/chat', async (req, res) => {
   try {
     const customerId = req.query.customerId;
