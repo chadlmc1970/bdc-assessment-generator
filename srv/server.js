@@ -126,18 +126,42 @@ app.get('/api/customers/:id', async (req, res) => {
   }
 });
 
-// Customer search endpoint
+// Customer search endpoint (with SQLite fallback)
 app.get('/api/customers/search', async (req, res) => {
   try {
     const query = req.query.q;
     if (!query) return res.status(400).json({ error: 'Missing query parameter: q' });
 
-    const customers = await searchCustomers(query);
-    if (!customers || customers.length === 0) {
-      return res.status(404).json({ error: 'Customer not found', query });
-    }
+    // Try CDS first
+    try {
+      const customers = await searchCustomers(query);
+      if (!customers || customers.length === 0) {
+        return res.status(404).json({ error: 'Customer not found', query });
+      }
+      return res.json(customers[0]);
+    } catch (cdsError) {
+      // CDS failed, fall back to direct SQLite
+      console.log('CDS search failed, using direct SQLite:', cdsError.message);
+      const Database = require('better-sqlite3');
+      const db = new Database('db.sqlite', { readonly: true });
 
-    res.json(customers[0]);
+      const customer = db.prepare(`
+        SELECT id, name, erpDeployment, existingBW, otherDatalake,
+               bdcOverview, dataOwner, aiOwner, iae
+        FROM bdc_assessment_Customers
+        WHERE lower(name) LIKE ?
+        ORDER BY name
+        LIMIT 1
+      `).get(`%${query.toLowerCase()}%`);
+
+      db.close();
+
+      if (!customer) {
+        return res.status(404).json({ error: 'Customer not found', query });
+      }
+
+      return res.json(customer);
+    }
   } catch (error) {
     console.error('Customer search error:', error);
     res.status(500).json({ error: 'Failed to search customers', message: error.message });
