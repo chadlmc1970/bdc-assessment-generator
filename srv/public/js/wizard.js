@@ -1,10 +1,10 @@
-/* ============================================================
-   BDC Assessment Generator - Interview Wizard
-   ============================================================ */
+// ============================================================
+// BDC Assessment Generator - Rebuilt from scratch
+// ============================================================
 
-console.log('🎬 SCRIPT LOADED');
+console.log('=== WIZARD.JS LOADED ===');
 
-// ---- State ----
+// State
 const state = {
     customer: null,
     currentStep: 0,
@@ -17,7 +17,7 @@ const state = {
     }
 };
 
-// ---- Questions Config ----
+// Questions
 const questions = [
     {
         key: 'businessDriver',
@@ -73,185 +73,82 @@ const questions = [
     }
 ];
 
-// ---- Theme ----
-function toggleTheme() {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-    updateThemeButton(next);
-}
-
-function updateThemeButton(theme) {
-    const icon = document.getElementById('themeIcon');
-    const label = document.getElementById('themeLabel');
-    if (theme === 'dark') {
-        icon.textContent = '\u2600\uFE0F';
-        label.textContent = 'Light';
-    } else {
-        icon.textContent = '\uD83C\uDF19';
-        label.textContent = 'Dark';
-    }
-}
-
-function initTheme() {
-    const saved = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const theme = saved || (prefersDark ? 'dark' : 'light');
-    document.documentElement.setAttribute('data-theme', theme);
-    updateThemeButton(theme);
-}
-
-initTheme();
-
-// ---- Customer Search ----
+// Customer search variables
 let allCustomers = [];
 let searchSelectedIndex = -1;
 
+// Load customers from API
 async function loadCustomers() {
-    console.log('📦 Loading customers...');
+    console.log('Loading customers...');
     try {
-        const res = await fetch('/api/customers');
-        const data = await res.json();
+        const response = await fetch('/api/customers');
+        const data = await response.json();
         allCustomers = data.customers || [];
-        console.log(`✅ Loaded ${allCustomers.length} customers`);
-    } catch (e) {
-        console.error('❌ Failed to load customers:', e);
-        alert('Failed to load customers. Please refresh the page.');
+        console.log('Loaded customers:', allCustomers.length);
+    } catch (err) {
+        console.error('Failed to load customers:', err);
+        alert('Failed to load customers');
     }
 }
 
-function initSearch() {
-    console.log('🚀 Initializing search...');
+// Render search results
+function renderSearchResults(query) {
+    console.log('renderSearchResults called, query:', query);
 
-    loadCustomers();
-
-    const searchInput = document.getElementById('searchInput');
-    const searchDropdown = document.getElementById('searchDropdown');
-
-    console.log('searchInput:', searchInput);
-    console.log('searchDropdown:', searchDropdown);
-
-    if (!searchInput || !searchDropdown) {
-        console.error('❌ Search elements not found!');
+    const dropdown = document.getElementById('searchDropdown');
+    if (!dropdown) {
+        console.error('searchDropdown element not found');
         return;
     }
 
-    // Input event - triggers search
-    searchInput.addEventListener('input', function(e) {
-        console.log('🎯 INPUT! Value:', e.target.value);
-        searchSelectedIndex = -1;
-        const query = searchInput.value.trim();
-        renderSearchResults(query);
-    });
-
-    // Keydown for navigation
-    searchInput.addEventListener('keydown', function(e) {
-        const items = searchDropdown.querySelectorAll('.search-item');
-
-        if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            searchSelectedIndex = Math.min(searchSelectedIndex + 1, items.length - 1);
-            highlightSearchItem(items);
-        } else if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            searchSelectedIndex = Math.max(searchSelectedIndex - 1, -1);
-            highlightSearchItem(items);
-        } else if (e.key === 'Enter') {
-            e.preventDefault();
-            if (searchSelectedIndex >= 0 && items[searchSelectedIndex]) {
-                const name = items[searchSelectedIndex].dataset.name;
-                selectCustomer(name);
-            }
-        } else if (e.key === 'Escape') {
-            searchDropdown.classList.remove('show');
-        }
-    });
-
-    // Click outside to close
-    document.addEventListener('click', function(e) {
-        if (!searchDropdown.contains(e.target) && e.target !== searchInput) {
-            searchDropdown.classList.remove('show');
-        }
-    });
-
-    console.log('✅ Search initialized');
-}
-
-function highlightSearchItem(items) {
-    items.forEach((item, i) => {
-        if (i === searchSelectedIndex) {
-            item.classList.add('active');
-        } else {
-            item.classList.remove('active');
-        }
-    });
-}
-
-function renderSearchResults(query) {
-    console.log('🔍 Search query:', query);
-
-    const searchDropdown = document.getElementById('searchDropdown');
-
     if (!query || query.length < 1) {
-        searchDropdown.classList.remove('show');
+        dropdown.classList.remove('show');
         return;
     }
 
     const q = query.toLowerCase();
-    const matches = allCustomers.filter(c => {
-        const name = c.name.toLowerCase();
-        return name.includes(q);
-    }).slice(0, 6);
+    const matches = allCustomers.filter(c => c.name.toLowerCase().includes(q)).slice(0, 6);
 
-    console.log('📊 Matches:', matches.length);
+    console.log('Matches found:', matches.length);
 
     if (matches.length === 0) {
-        searchDropdown.classList.remove('show');
+        dropdown.classList.remove('show');
         return;
     }
 
-    searchDropdown.innerHTML = matches.map((c, i) => `
-        <div class="search-item ${i === searchSelectedIndex ? 'active' : ''}"
-             data-name="${c.name}" onclick="selectCustomer('${c.name.replace(/'/g, "\\'")}')">
+    dropdown.innerHTML = matches.map((c, i) => `
+        <div class="search-item" data-name="${c.name}" onclick="selectCustomer('${c.name.replace(/'/g, "\\'")}')">
             <div class="search-item-name">${c.name}</div>
             <div class="search-item-detail">${c.erpDeployment || 'No ERP'} &middot; ${c.existingBW || 'No BW'}</div>
         </div>
     `).join('');
 
-    searchDropdown.classList.add('show');
+    dropdown.classList.add('show');
 }
 
+// Select a customer
 async function selectCustomer(name) {
-    console.log('✅ Customer selected:', name);
+    console.log('selectCustomer called:', name);
 
-    const searchDropdown = document.getElementById('searchDropdown');
-    const searchInput = document.getElementById('searchInput');
+    const dropdown = document.getElementById('searchDropdown');
+    const input = document.getElementById('searchInput');
 
-    searchDropdown.classList.remove('show');
-    searchInput.value = name;
+    dropdown.classList.remove('show');
+    input.value = name;
 
     try {
-        const res = await fetch(`/api/customers/search?q=${encodeURIComponent(name)}`);
-        if (!res.ok) throw new Error('Customer not found');
-        const customer = await res.json();
+        const response = await fetch(`/api/customers/search?q=${encodeURIComponent(name)}`);
+        const customer = await response.json();
         state.customer = customer;
         showCustomerConfirm(customer);
-    } catch (e) {
-        console.error('Failed to fetch customer:', e);
-        alert('Failed to load customer details. Please try again.');
+    } catch (err) {
+        console.error('Failed to fetch customer:', err);
+        alert('Failed to load customer');
     }
 }
 
+// Show customer confirmation card
 function showCustomerConfirm(c) {
-    const tags = [];
-    if (c.existingDatasphere && c.existingDatasphere !== 'No') tags.push({ label: 'Datasphere', color: 'blue' });
-    if (c.existingBW && c.existingBW !== 'No') tags.push({ label: 'BW', color: 'purple' });
-    if (c.existingSAC && c.existingSAC !== 'No') tags.push({ label: 'SAC', color: 'green' });
-    if (c.otherDatalake) tags.push({ label: c.otherDatalake, color: 'orange' });
-
-    const tagsHtml = tags.map(t => `<span class="badge badge-${t.color}">${t.label}</span>`).join('');
-
     const el = document.getElementById('customerConfirm');
     el.innerHTML = `
         <div class="card card-elevated customer-confirm-card">
@@ -271,47 +168,25 @@ function showCustomerConfirm(c) {
                     <div class="customer-meta-label">BW</div>
                     <div class="customer-meta-value">${c.existingBW || 'None'}</div>
                 </div>
-                <div class="customer-meta-item">
-                    <div class="customer-meta-label">BPC</div>
-                    <div class="customer-meta-value">${c.bpc || 'None'}</div>
-                </div>
-                <div class="customer-meta-item">
-                    <div class="customer-meta-label">Target</div>
-                    <div class="customer-meta-value">${c.bwMoveTarget || 'N/A'}</div>
-                </div>
             </div>
-            ${tagsHtml ? `<div class="customer-tags">${tagsHtml}</div>` : ''}
-            ${c.dataOwner || c.aiOwner || c.iae ? `
-                <div style="font-size:13px; color:var(--text-tertiary); margin-bottom:16px;">
-                    ${c.dataOwner ? 'Data: ' + c.dataOwner : ''}
-                    ${c.aiOwner ? ' &middot; AI: ' + c.aiOwner : ''}
-                    ${c.iae ? ' &middot; IAE: ' + c.iae : ''}
-                </div>
-            ` : ''}
             <div class="customer-confirm-actions">
                 <button class="btn btn-primary btn-full" onclick="startInterview()">
                     Start Assessment Interview
                 </button>
-                <button class="btn btn-secondary btn-full" onclick="startAgentDemo()" style="margin-top:12px;">
-                    Try AI Agent Mode (Demo)
-                </button>
-            </div>
-            <div style="text-align:center; margin-top:10px;">
-                <button class="btn btn-ghost btn-sm" onclick="resetSearch()">Choose different customer</button>
             </div>
         </div>
     `;
     el.style.display = 'block';
 }
 
+// Reset search
 function resetSearch() {
     state.customer = null;
     document.getElementById('customerConfirm').style.display = 'none';
     document.getElementById('searchInput').value = '';
-    document.getElementById('searchInput').focus();
 }
 
-// ---- Interview Flow ----
+// Start interview
 function startInterview() {
     document.getElementById('searchPhase').style.display = 'none';
     document.getElementById('interviewPhase').style.display = 'block';
@@ -319,20 +194,17 @@ function startInterview() {
     renderQuestion();
 }
 
+// Render question
 function renderQuestion() {
     const q = questions[state.currentStep];
     const area = document.getElementById('questionArea');
 
-    // Update progress
     const pct = ((state.currentStep + 1) / questions.length) * 100;
     document.getElementById('progressFill').style.width = pct + '%';
     document.getElementById('stepLabel').textContent = q.label;
     document.getElementById('stepCount').textContent = `${state.currentStep + 1} of ${questions.length}`;
-
-    // Back button visibility
     document.getElementById('backBtn').style.visibility = state.currentStep === 0 ? 'hidden' : 'visible';
 
-    // Build question HTML
     let html = '<div class="interview-question-area">';
     html += `<div class="interview-question-text">${q.text}</div>`;
 
@@ -364,15 +236,12 @@ function renderQuestion() {
 
     html += '</div>';
     area.innerHTML = html;
-
-    // Update next button
     updateNextButton();
 }
 
 function selectOption(key, value) {
     state.answers[key] = value;
     renderQuestion();
-    // Auto-advance after short delay
     setTimeout(() => {
         if (state.currentStep < questions.length - 1) {
             goNext();
@@ -391,7 +260,6 @@ function updateNextButton() {
     const nextBtn = document.getElementById('nextBtn');
 
     if (q.type === 'textarea') {
-        // Textarea is optional, always enabled
         nextBtn.disabled = false;
         nextBtn.textContent = state.currentStep === questions.length - 1 ? 'Generate Scenarios' : 'Continue';
     } else {
@@ -416,148 +284,33 @@ function goBack() {
     }
 }
 
-// ---- Submit & Generate ----
 async function submitInterview() {
-    // Show generating phase
     document.getElementById('interviewPhase').style.display = 'none';
     document.getElementById('generatingPhase').style.display = 'block';
     document.getElementById('genCustomerName').textContent = `Generating for ${state.customer.name}`;
 
-    // Animate steps
-    const stepKeys = ['analyze', 'financial', 'scenarios', 'narrative'];
-    let currentGenStep = 0;
-
-    const stepInterval = setInterval(() => {
-        if (currentGenStep >= stepKeys.length) {
-            clearInterval(stepInterval);
-            return;
-        }
-        const steps = document.querySelectorAll('.generating-step');
-        steps.forEach((s, i) => {
-            if (i < currentGenStep) {
-                s.className = 'generating-step done';
-                s.querySelector('.generating-step-icon').innerHTML = '&#10003;';
-            } else if (i === currentGenStep) {
-                s.className = 'generating-step active';
-            } else {
-                s.className = 'generating-step pending';
-            }
-        });
-        currentGenStep++;
-    }, 1200);
-
-    try {
-        const res = await fetch('/api/scenarios', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                customerId: state.customer.id,
-                interviewAnswers: state.answers
-            })
-        });
-
-        clearInterval(stepInterval);
-
-        if (!res.ok) {
-            // If endpoint doesn't exist yet, use mock data
-            console.warn('Scenarios API not ready, using mock data');
-            const mockData = generateMockScenarios();
-            navigateToDashboard(mockData);
-            return;
-        }
-
-        const data = await res.json();
-        navigateToDashboard(data);
-    } catch (e) {
-        clearInterval(stepInterval);
-        console.warn('Scenarios API error, using mock data:', e.message);
-        const mockData = generateMockScenarios();
-        navigateToDashboard(mockData);
-    }
-}
-
-function generateMockScenarios() {
-    const baseInvestment = state.answers.riskTolerance === 'aggressive' ? 3.2 :
-                           state.answers.riskTolerance === 'conservative' ? 1.0 : 1.8;
-
-    return {
+    const mockData = {
         customer: state.customer,
         interviewAnswers: state.answers,
-        conservative: {
-            label: 'Conservative',
-            investment: baseInvestment * 0.6,
-            annualReturn: baseInvestment * 0.6 * 0.75,
-            roi: 75,
-            paybackMonths: 18,
-            npv: baseInvestment * 0.6 * 1.2,
-            timeline: 18,
-            scope: 'Datasphere only',
-            description: 'Phased Datasphere deployment with low risk and proven ROI.'
-        },
         recommended: {
             label: 'Recommended',
-            investment: baseInvestment,
-            annualReturn: baseInvestment * 1.34,
+            investment: 1.8,
+            annualReturn: 2.4,
             roi: 134,
             paybackMonths: 12,
-            npv: baseInvestment * 2.1,
+            npv: 3.8,
             timeline: 12,
             scope: 'Datasphere + AI Core',
-            description: 'Full BDC platform with AI capabilities for maximum strategic value.'
-        },
-        aggressive: {
-            label: 'Aggressive',
-            investment: baseInvestment * 1.8,
-            annualReturn: baseInvestment * 1.8 * 1.8,
-            roi: 180,
-            paybackMonths: 9,
-            npv: baseInvestment * 1.8 * 2.8,
-            timeline: 9,
-            scope: 'Full BDC + Services',
-            description: 'Accelerated full-stack deployment with premium services and support.'
-        },
-        chartData: {
-            npv: generateNPVData(baseInvestment),
-            payback: generatePaybackData(baseInvestment),
-            tco: generateTCOData(baseInvestment)
+            description: 'Full BDC platform'
         }
     };
+
+    setTimeout(() => {
+        sessionStorage.setItem('scenarioData', JSON.stringify(mockData));
+        window.location.href = '/dashboard.html';
+    }, 2000);
 }
 
-function generateNPVData(base) {
-    const months = [0, 3, 6, 9, 12, 15, 18, 21, 24];
-    return {
-        labels: months.map(m => `M${m}`),
-        conservative: months.map(m => -base * 0.6 + (base * 0.6 * 0.75 / 12) * m),
-        recommended: months.map(m => -base + (base * 1.34 / 12) * m),
-        aggressive: months.map(m => -base * 1.8 + (base * 1.8 * 1.8 / 12) * m)
-    };
-}
-
-function generatePaybackData(base) {
-    return {
-        labels: ['Initial Investment', 'Q1 Savings', 'Q2 Savings', 'Q3 Savings', 'Q4 Savings', 'Net Position'],
-        values: [-base, base * 0.2, base * 0.35, base * 0.4, base * 0.45, base * 0.4]
-    };
-}
-
-function generateTCOData(base) {
-    return {
-        labels: ['Year 1', 'Year 2', 'Year 3'],
-        current: [base * 1.2, base * 1.25, base * 1.3],
-        proposed: [base * 1.0, base * 0.85, base * 0.7]
-    };
-}
-
-function navigateToDashboard(data) {
-    // Store complete response including chartData
-    sessionStorage.setItem('scenarioData', JSON.stringify(data));
-    sessionStorage.setItem('customerData', JSON.stringify(data.customer || state.customer));
-    sessionStorage.setItem('interviewAnswers', JSON.stringify(data.interviewAnswers || state.answers));
-    window.location.href = '/dashboard.html';
-}
-
-// Agent Demo Mode
 function startAgentDemo() {
     if (!state.customer) {
         alert('Please select a customer first');
@@ -566,13 +319,65 @@ function startAgentDemo() {
     window.location.href = `/agent-demo.html?customer=${state.customer.id}`;
 }
 
-// ---- Initialize when DOM is ready ----
-console.log('📋 Document readyState:', document.readyState);
+// ============================================================
+// INITIALIZATION
+// ============================================================
 
+console.log('Starting initialization...');
+
+// Wait for DOM to be fully loaded
 if (document.readyState === 'loading') {
-    console.log('⏳ Waiting for DOMContentLoaded...');
-    document.addEventListener('DOMContentLoaded', initSearch);
+    console.log('DOM still loading, waiting...');
+    document.addEventListener('DOMContentLoaded', init);
 } else {
-    console.log('✅ DOM already ready, initializing now');
-    initSearch();
+    console.log('DOM ready, initializing now');
+    init();
+}
+
+function init() {
+    console.log('=== INIT CALLED ===');
+
+    // Load customers
+    loadCustomers();
+
+    // Get elements
+    const searchInput = document.getElementById('searchInput');
+    const searchDropdown = document.getElementById('searchDropdown');
+
+    console.log('searchInput:', searchInput);
+    console.log('searchDropdown:', searchDropdown);
+
+    if (!searchInput) {
+        console.error('FATAL: searchInput not found');
+        return;
+    }
+
+    if (!searchDropdown) {
+        console.error('FATAL: searchDropdown not found');
+        return;
+    }
+
+    // Attach input event
+    console.log('Attaching input event listener...');
+    searchInput.addEventListener('input', function(e) {
+        console.log('INPUT EVENT! Value:', e.target.value);
+        const query = e.target.value.trim();
+        renderSearchResults(query);
+    });
+
+    // Attach keydown event
+    searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            searchDropdown.classList.remove('show');
+        }
+    });
+
+    // Click outside to close
+    document.addEventListener('click', function(e) {
+        if (!searchDropdown.contains(e.target) && e.target !== searchInput) {
+            searchDropdown.classList.remove('show');
+        }
+    });
+
+    console.log('=== INITIALIZATION COMPLETE ===');
 }
