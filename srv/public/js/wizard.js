@@ -150,6 +150,29 @@ async function selectCustomer(name) {
 // Show customer confirmation card
 function showCustomerConfirm(c) {
     const el = document.getElementById('customerConfirm');
+
+    // Check if Love's (customer with reference documents)
+    const isLoves = c.name && c.name.toLowerCase().includes('love');
+    const docsHtml = isLoves ? `
+        <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-color);">
+            <div style="font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px;">
+                📄 Reference Documents
+            </div>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <a href="/downloads/loves-executive-summary.pdf" target="_blank"
+                   style="flex: 1; min-width: 200px; padding: 12px 16px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; text-decoration: none; color: var(--text-primary); font-size: 13px; display: flex; align-items: center; gap: 8px;">
+                    <span>📊</span>
+                    <span>Executive Summary</span>
+                </a>
+                <a href="/downloads/loves-financial-appendix.pdf" target="_blank"
+                   style="flex: 1; min-width: 200px; padding: 12px 16px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; text-decoration: none; color: var(--text-primary); font-size: 13px; display: flex; align-items: center; gap: 8px;">
+                    <span>💰</span>
+                    <span>Financial Appendix</span>
+                </a>
+            </div>
+        </div>
+    ` : '';
+
     el.innerHTML = `
         <div class="card card-elevated customer-confirm-card">
             <div class="customer-confirm-header">
@@ -168,7 +191,16 @@ function showCustomerConfirm(c) {
                     <div class="customer-meta-label">BW</div>
                     <div class="customer-meta-value">${c.existingBW || 'None'}</div>
                 </div>
+                <div class="customer-meta-item">
+                    <div class="customer-meta-label">Data Lake</div>
+                    <div class="customer-meta-value">${c.otherDatalake || 'None'}</div>
+                </div>
+                <div class="customer-meta-item">
+                    <div class="customer-meta-label">Data Owner</div>
+                    <div class="customer-meta-value">${c.dataOwner || 'N/A'}</div>
+                </div>
             </div>
+            ${docsHtml}
             <div class="customer-confirm-actions">
                 <button class="btn btn-primary btn-full" onclick="startInterview()">
                     Start Assessment Interview
